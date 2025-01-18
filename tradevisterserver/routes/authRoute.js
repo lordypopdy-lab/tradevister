@@ -3,12 +3,12 @@ const router = express.Router();
 const cors = require("cors");
 
 const corsOptions = {
-    origin: 'https://tradezenclient.vercel.app', 
+    origin: 'https://tradevister.vercel.app', 
     credentials: true,
     methods: 'GET,POST,PUT,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type,Authorization',
   };
-  // https://tradezenclient.vercel.app/login
+  // https://tradevister.vercel.app/login
   
   router.use(cors(corsOptions));
   router.options('*', cors(corsOptions)); 
