@@ -8,7 +8,6 @@ const corsOptions = {
     methods: 'GET,POST,PUT,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type,Authorization',
   };
-  // https://tradevister.vercel.app/login
   
   router.use(cors(corsOptions));
   router.options('*', cors(corsOptions)); 
