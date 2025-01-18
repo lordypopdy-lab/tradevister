@@ -28,7 +28,7 @@ const Register = () => {
 
     const createUser = async (e) => {
         e.preventDefault();
-        setLoading(false);
+        setLoading(true);
 
         const {
             name,
