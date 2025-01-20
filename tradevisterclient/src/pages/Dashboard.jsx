@@ -37,7 +37,7 @@ const Dashboard = () => {
         setIsBalanceVisible((prev) => !prev);
     };
     const handleSend = async () => {
-        alert("Message Sent!");
+        window.location.href = "/contact"
     }
 
 
