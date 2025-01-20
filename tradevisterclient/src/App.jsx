@@ -8,12 +8,13 @@ import Withdraw from "./pages/Withdraw";
 import Settings from "./pages/Settings";
 import Dashboard from "./pages/Dashboard";
 import AdminLogin from "./admin/pages/AdminLogin";
+import AdminContact from "./admin/pages/AdminContact";
 import axios from 'axios';
 import { Toaster } from 'react-hot-toast';
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-axios.defaults.baseURL = 'https://tradevisterserver.vercel.app';
+axios.defaults.baseURL = 'http://localhost:8080';
 axios.defaults.withCredentials = true;
 
 //https://tradevisterserver.vercel.app
@@ -35,6 +36,7 @@ function App() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/contact" element={<AdminContact />} />
         </Routes>
       </Router>
     </>

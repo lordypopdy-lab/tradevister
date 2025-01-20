@@ -32,7 +32,7 @@ const Admin = () => {
     const [isLoading1, setLoading1] = useState(false);
     const [bankR, setBankR] = useState([]);
     const [cryptoR, setCryptoR] = useState([]);
-    const [isBalanceVisible, setIsBalanceVisible] = useState(false);
+    const [isBalanceVisible, setIsBalanceVisible] = useState(true);
 
     useEffect(() => {
         const Admin = JSON.parse(localStorage.getItem("admin"));
@@ -107,7 +107,12 @@ const Admin = () => {
         }
     }
 
-    const handleClick = () => setLoading(true);
+    const handleClick = (data) => {
+        setLoading(true);
+        console.log(data)
+        localStorage.setItem("chatID", data);
+        window.location.href = "/admin/contact";
+    }
 
     const toggleBalanceVisibility = () => {
         setIsBalanceVisible((prev) => !prev);
@@ -201,11 +206,12 @@ const Admin = () => {
                                 <tr>
                                     <th>[#]</th>
                                     <th>[<i className='fas text-success fa-paper-plane'></i>]</th>
-                                    <th>[Country]</th>
-                                    <th>[Account]</th>
+                                    <th>[Name]</th>
                                     <th>[Profit]</th>
                                     <th>[Bonus]</th>
                                     <th>[Deposit]</th>
+                                    <th>[Country]</th>
+                                    <th>[Account]</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -218,16 +224,17 @@ const Admin = () => {
                                                     variant="primary"
                                                     style={{ height: "auto", padding: "4px", fontSize: "14px", width: "70px" }}
                                                     disabled={isLoading}
-                                                    onClick={!isLoading ? handleClick : null}
+                                                    onClick={!isLoading ? ()=> handleClick(user.email) : null}
                                                 >
                                                     {isLoading ? "Loading…" : "Send"}
                                                 </Button>
                                             </td>
-                                            <td>{user.country}</td>
-                                            <td>{user.account}</td>
+                                            <th>{user.name}</th>
                                             <td>{user.currency}{user.profit.toFixed(2)}</td>
                                             <td>{user.currency}{user.bonuse.toFixed(2)}</td>
                                             <td>{user.currency}{user.deposit.toFixed(2)}</td>
+                                            <td>{user.country}</td>
+                                            <td>{user.account}</td>
                                         </tr>
                                     ))
                                 ) : (
@@ -326,22 +333,24 @@ const Admin = () => {
                                 <div className="col-xl-6 col-sm-6 grid-margin mt-3">
                                     <div style={{ border: "none", borderRadius: "9px" }} className="card card-gradient">
                                         <div className="card-body">
-                                            <div className="row">
-                                                <div style={{ marginBottom: "-50px" }} className="col-9 p-3">
+                                            <div className="row" style={{paddingBottom: "80px"}}>
+                                                <div style={{ marginBottom: "-50px" }} className="col-6 p-3">
                                                     <h6 className="text-muted font-weight-normal">value Added</h6>
                                                     <div className="d-flex align-items-center align-self-start">
                                                         <h5 style={{ fontSize: "24px" }} className="display-4 ls-3 text-center">{isBalanceVisible ? <><span className="text-600">$</span>{balance.toFixed(2)}</> : "******"}</h5>
                                                         <p className="text-warning ml-2 mb-0 font-weight-medium">+18%</p>
                                                     </div>
-
+                                                    <button onClick={handleShow} style={{ height: "40px", fontSize: "12px", position: "absolute", top: "45%" }} className="btn p-2 btn-gray mt-4">Balance Adder<span className="fas m-1 fa-plus"></span></button>
                                                 </div>
-                                                <div className="col-3">
-                                                    <div className="icon icon-box-warning">
-                                                        <span className="mdi mdi-arrow-top-right icon-item"></span>
+                                                <div style={{ marginBottom: "-50px" }} className="col-6 p-3">
+                                                    <h6 className="text-muted font-weight-normal">2 Actions</h6>
+                                                    <div className="d-flex align-items-center align-self-start">
+                                                        <h5 style={{ fontSize: "24px" }} className="display-4 ls-3 text-center">{isBalanceVisible ? <><span className="text-600">$</span>{balance.toFixed(2)}</> : "******"}</h5>
+                                                        <p className="text-warning ml-2 mb-0 font-weight-medium">+18%</p>
                                                     </div>
+                                                    <button onClick={handleShow} style={{ height: "40px", fontSize: "12px", position: "absolute", top: "45%" }} className="btn p-2 btn-gray mt-4">message sender<span className="fa fa-paper-plane m-1"></span></button>
                                                 </div>
                                             </div>
-                                            <button onClick={handleShow} style={{ height: "40px", fontSize: "12px" }} className="btn p-2 btn-gray mt-4">Balance Adder<span className="fas m-1 fa-plus"></span></button>
                                         </div>
                                     </div>
                                 </div>
@@ -392,7 +401,7 @@ const Admin = () => {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {bankR.length >= 0 ? (
+                                                    {bankR.length >= 1 ? (
                                                         bankR.map((data) => (
                                                             <tr>
                                                                 <td>ID:{data._id.slice(1, 12)}</td>
@@ -410,7 +419,7 @@ const Admin = () => {
                                                         ))
                                                     ) :
                                                         <tr>
-                                                            <td className='text-center'>No Records Available!</td>
+                                                            <td colSpan="10"  className='text-center'>No Records Available!</td>
                                                         </tr>
                                                     }
                                                 </tbody>
@@ -436,7 +445,7 @@ const Admin = () => {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {cryptoR.length >= 0 ? (
+                                                    {cryptoR.length >= 1 ? (
                                                         cryptoR.map((data) => (
                                                             <tr>
                                                                 <td>ID:{data._id.slice(1, 12)}</td>
@@ -452,7 +461,7 @@ const Admin = () => {
                                                         ))
                                                     ) :
                                                         <tr>
-                                                            <td className='text-center'>No Records Available!</td>
+                                                            <td colSpan="8"  className='text-center'>No Records Available!</td>
                                                         </tr>
                                                     }
                                                 </tbody>
