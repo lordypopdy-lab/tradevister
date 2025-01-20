@@ -2,8 +2,59 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const Admin = require("../models/adminModel");
 const bankModel = require("../models/bankModel");
+const chatModel = require("../models/chatModel");
 const cryptoModel = require("../models/cryptoModel");
 const { hashPassword, comparePassword } = require("../helpers/auth");
+
+const chatSend = async (req, res) => {
+  const { message, from, email } = req.body;
+
+  if (!message) {
+    return res.json({
+      error: "Message field is required"
+    })
+  }
+
+  if (!from) {
+    return res.json({
+      error: "unidentified User"
+    })
+  }
+
+  if(!email){
+    return res.json({
+      error: "Email Not Found"
+    })
+  }
+  const createNewChat = await chatModel.create({
+    from: from,
+    email: email,
+    message: message,
+    tmp_stp: new Date()
+  })
+
+  if(createNewChat){
+    const chat = await chatModel.findOne({email: email});
+    return res.json({
+      chat: chat
+    })
+  }
+}
+
+const getAdminChat = async (req, res) => {
+  const { email } = req.body;
+
+  const getChat = await chatModel.findOne({ email: email });
+  if (getChat) {
+    return res.json({
+      chats: getChat
+    });
+  }
+
+  res.json({
+    message: "No Chat Available"
+  })
+}
 
 const AdminGetCrypto = async (req, res) => {
   const { email } = req.body;
@@ -497,10 +548,12 @@ module.exports = {
   test,
   getUser,
   getUsers,
+  chatSend,
   loginUser,
   createUser,
   loginAdmin,
   addBalance,
+  getAdminChat,
   withdrawBank,
   AdminGetBankR,
   AdminGetCrypto,
