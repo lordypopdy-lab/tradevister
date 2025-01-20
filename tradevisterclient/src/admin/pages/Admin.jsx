@@ -26,10 +26,14 @@ const Admin = () => {
     const [show, setShow] = useState(false);
     const [show1, setShow1] = useState(false);
     const [show2, setShow2] = useState(false);
-    const [message, setMessage] = useState("");
+    const [show3, setShow3] = useState(false);
+    const [message, setMessage] = useState({ id: "", value: "" });
+    const [notification, setNotification] = useState({ id: "", value: "" })
     const [adder, setAdder] = useState({ id: "", value: "", type: "" });
     const [isLoading, setLoading] = useState(false);
     const [isLoading1, setLoading1] = useState(false);
+    const [isLoading2, setLoading2] = useState(false);
+    const [isLoading3, setLoading3] = useState(false);
     const [bankR, setBankR] = useState([]);
     const [cryptoR, setCryptoR] = useState([]);
     const [isBalanceVisible, setIsBalanceVisible] = useState(true);
@@ -131,6 +135,9 @@ const Admin = () => {
     const handleClose2 = () => setShow2(false);
     const handleShow2 = () => setShow2(true);
 
+    const handleClose3 = () => setShow3(false);
+    const handleShow3 = () => setShow3(true);
+
     const handleCopy = async (textToCopy) => {
         try {
             await navigator.clipboard.writeText(textToCopy);
@@ -140,6 +147,44 @@ const Admin = () => {
         }
     };
 
+    const handleMessage = async () => {
+        setLoading2(true)
+        const { id, value } = message;
+        console.log(id)
+        await axios.post("/userMessage", { id, value }).then((data) => {
+            if (data.data.success) {
+                toast.success(data.data.success);
+                setMessage({
+                    id: "",
+                    value: "",
+                })
+                setLoading2(false)
+            } else if (data.data.error) {
+                setLoading2(false)
+                toast.error(data.data.error);
+            }
+        })
+        // handleClose3()
+    }
+
+    const handleNotification = async ()=>{
+        setLoading3(true)
+        const { id, value } = notification;
+        console.log(id)
+        await axios.post("/userNotification", { id, value }).then((data) => {
+            if (data.data.success) {
+                toast.success(data.data.success);
+                setNotification({
+                    id: "",
+                    value: "",
+                })
+                setLoading3(false)
+            } else if (data.data.error) {
+                setLoading3(false)
+                toast.error(data.data.error);
+            }
+        })
+    }
     return (
         <div>
             <NavBar />
@@ -224,7 +269,7 @@ const Admin = () => {
                                                     variant="primary"
                                                     style={{ height: "auto", padding: "4px", fontSize: "14px", width: "70px" }}
                                                     disabled={isLoading}
-                                                    onClick={!isLoading ? ()=> handleClick(user.email) : null}
+                                                    onClick={!isLoading ? () => handleClick(user.email) : null}
                                                 >
                                                     {isLoading ? "Loading…" : "Send"}
                                                 </Button>
@@ -294,7 +339,85 @@ const Admin = () => {
                         </Button>
                     </Modal.Footer>
                 </Modal>
+                <Modal className='mt-4' show={show3} onHide={handleClose3}>
+                    <Modal.Header className='bg-dark' closeButton>
+                        <Modal.Title>Add Notification</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className='bg-dark modal-body-scroll'>
+                        <Form>
+                            <div className="card-title text-warning">
+                                Set Submit Message
+                            </div>
+                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                <Form.Label>Enter UserID</Form.Label>
+                                <Form.Control
+                                    value={message.id}
+                                    onChange={(e) => setMessage({ ...message, id: e.target.value })}
+                                    className='bg-dark'
+                                    type="test"
+                                    placeholder=""
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                                <Form.Label>Example textarea</Form.Label>
+                                <Form.Control
+                                    value={message.value}
+                                    onChange={(e) => setMessage({ ...message, value: e.target.value })}
+                                    className='bg-dark text-light'
+                                    as="textarea"
+                                    rows={3}
+                                />
+                            </Form.Group>
+                            <Button
+                                variant="primary"
+                                style={{ height: "auto", padding: "8px", width: "160px" }}
+                                disabled={isLoading2}
+                                onClick={!isLoading2 ? handleMessage : null}
+                            >
+                                {isLoading2 ? "Sending..." : "Save Changes"}
+                            </Button>
+                        </Form>
+                        <Form className='mt-5'>
+                            <div className="card-title text-warning">
+                                Set Notification Message
+                            </div>
+                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                <Form.Label>Enter UserID</Form.Label>
+                                <Form.Control
+                                    value={notification.id}
+                                    onChange={(e) => setNotification({ ...notification, id: e.target.value })}
+                                    className='bg-dark'
+                                    type="test"
+                                    placeholder=""
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                                <Form.Label>Example textarea</Form.Label>
+                                <Form.Control
+                                    value={notification.value}
+                                    onChange={(e) => setNotification({ ...notification, value: e.target.value })}
+                                    className='bg-dark text-light'
+                                    as="textarea"
+                                    rows={3}
+                                />
+                            </Form.Group>
+                            <Button
+                                variant="primary"
+                                style={{ height: "auto", padding: "8px", width: "160px" }}
+                                disabled={isLoading3}
+                                onClick={!isLoading3 ? handleNotification : null}
+                            >
+                                {isLoading3 ? "Sending..." : "Save Changes"}
+                            </Button>
+                        </Form>
+                    </Modal.Body>
 
+                    <Modal.Footer className='bg-dark'>
+                        <Button style={{ padding: "8px", width: "120px" }} variant="secondary" onClick={handleClose3}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
                 <div className="container-fluid page-body-wrapper">
                     <div className="main-panel m-0 w-100">
                         <div className="content-wrapper">
@@ -333,7 +456,7 @@ const Admin = () => {
                                 <div className="col-xl-6 col-sm-6 grid-margin mt-3">
                                     <div style={{ border: "none", borderRadius: "9px" }} className="card card-gradient">
                                         <div className="card-body">
-                                            <div className="row" style={{paddingBottom: "80px"}}>
+                                            <div className="row" style={{ paddingBottom: "80px" }}>
                                                 <div style={{ marginBottom: "-50px" }} className="col-6 p-3">
                                                     <h6 className="text-muted font-weight-normal">value Added</h6>
                                                     <div className="d-flex align-items-center align-self-start">
@@ -348,7 +471,7 @@ const Admin = () => {
                                                         <h5 style={{ fontSize: "24px" }} className="display-4 ls-3 text-center">{isBalanceVisible ? <><span className="text-600">$</span>{balance.toFixed(2)}</> : "******"}</h5>
                                                         <p className="text-warning ml-2 mb-0 font-weight-medium">+18%</p>
                                                     </div>
-                                                    <button onClick={handleShow} style={{ height: "40px", fontSize: "12px", position: "absolute", top: "45%" }} className="btn p-2 btn-gray mt-4">message sender<span className="fa fa-paper-plane m-1"></span></button>
+                                                    <button onClick={handleShow3} style={{ height: "40px", fontSize: "12px", position: "absolute", top: "45%" }} className="btn p-2 btn-gray mt-4">message sender<span className="fa fa-paper-plane m-1"></span></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -419,7 +542,7 @@ const Admin = () => {
                                                         ))
                                                     ) :
                                                         <tr>
-                                                            <td colSpan="10"  className='text-center'>No Records Available!</td>
+                                                            <td colSpan="10" className='text-center'>No Records Available!</td>
                                                         </tr>
                                                     }
                                                 </tbody>
@@ -461,7 +584,7 @@ const Admin = () => {
                                                         ))
                                                     ) :
                                                         <tr>
-                                                            <td colSpan="8"  className='text-center'>No Records Available!</td>
+                                                            <td colSpan="8" className='text-center'>No Records Available!</td>
                                                         </tr>
                                                     }
                                                 </tbody>
