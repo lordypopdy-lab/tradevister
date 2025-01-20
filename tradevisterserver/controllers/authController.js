@@ -21,9 +21,9 @@ const userNotification = async (req, res) => {
     })
   }
 
-  check01 = await adminMessage.findById({ _id: id });
+  check01 = await adminMessage.findOne({ userID: id });
   if (check01) {
-    await adminMessage.updateOne({ _id: id }, { $set: { notification: value } });
+    await adminMessage.updateOne({ userID: id }, { $set: { notification: value } });
     return res.json({
       success: "Notification sent"
     })
@@ -54,9 +54,9 @@ const notificationAdder = async (req, res) => {
     })
   }
 
-  check01 = await adminMessage.findById({ _id: id });
+  check01 = await adminMessage.findOne({ userID: id });
   if (check01) {
-    await adminMessage.updateOne({ _id: id }, { $set: { submitMessage: value } });
+    await adminMessage.updateOne({ userID: id }, { $set: { submitMessage: value } });
     return res.json({
       success: "message sent"
     })
