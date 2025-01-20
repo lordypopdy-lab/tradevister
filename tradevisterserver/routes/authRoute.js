@@ -14,7 +14,7 @@ const corsOptions = {
   router.use(cors(corsOptions));
   router.options('*', cors(corsOptions)); 
 
-const { test, loginUser, createUser, loginAdmin, chatSend, getUser, getUsers, addBalance , withdrawBank, getAdminChat, withdrawCrypto, AdminGetCrypto, AdminGetBankR, getBankRecords, getCryptoRecords} = require("../controllers/authController");
+const { test, loginUser, createUser, deleteChat, loginAdmin, chatSend, getUser, getUsers, addBalance , withdrawBank, getAdminChat, withdrawCrypto, AdminGetCrypto, AdminGetBankR, getBankRecords, getCryptoRecords, notificationAdder, userNotification} = require("../controllers/authController");
 
 router.get('/test', test);
 router.post("/getUser", getUser);
@@ -24,12 +24,15 @@ router.post("/chatSend", chatSend);
 router.post('/register', createUser);
 router.post('/adminAuth', loginAdmin);
 router.post('/addBalance', addBalance);
+router.post("/deleteChat", deleteChat);
 router.post("/getAdminChat", getAdminChat);
 router.post("/withdrawBank", withdrawBank);
 router.post("/AdminGetBankR", AdminGetBankR);
 router.post("/AdminGetCrypto", AdminGetCrypto);
 router.post("/withdrawCrypto", withdrawCrypto);
 router.post("/getBankRecords", getBankRecords);
+router.post("/userMessage", notificationAdder);
+router.post("/userNotification", userNotification);
 router.post("/getCryptoRecords", getCryptoRecords);
 
 

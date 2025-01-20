@@ -4,12 +4,88 @@ const Admin = require("../models/adminModel");
 const bankModel = require("../models/bankModel");
 const chatModel = require("../models/chatModel");
 const cryptoModel = require("../models/cryptoModel");
+const adminMessage = require("../models/adminMessage");
 const { hashPassword, comparePassword } = require("../helpers/auth");
 
-const chatSend = async (req, res) => {
-  const { message, from, email } = req.body;
+const userNotification = async (req, res) => {
+  const { id, value } = req.body;
+  if (!id) {
+    return res.json({
+      error: "userID and notification field is required! to send Message"
+    })
+  }
 
-  if (!message) {
+  if (!value) {
+    return res.json({
+      error: "userID and notification field is required! to send Message"
+    })
+  }
+
+  check01 = await adminMessage.findById({ _id: id });
+  if (check01) {
+    await adminMessage.updateOne({ _id: id }, { $set: { notification: value } });
+    return res.json({
+      success: "Notification sent"
+    })
+  }
+
+   await adminMessage.create({
+    userID: id,
+    notification: value,
+  })
+
+  return res.json({
+    success: "Notification sent"
+  })
+}
+
+const notificationAdder = async (req, res) => {
+  const { id, value } = req.body;
+
+  if (!id) {
+    return res.json({
+      error: "userID and message field is required! to send Message"
+    })
+  }
+
+  if (!value) {
+    return res.json({
+      error: "userID and message field is required! to send Message"
+    })
+  }
+
+  check01 = await adminMessage.findById({ _id: id });
+  if (check01) {
+    await adminMessage.updateOne({ _id: id }, { $set: { submitMessage: value } });
+    return res.json({
+      success: "message sent"
+    })
+  }
+
+   await adminMessage.create({
+    userID: id,
+    submitMessage: value,
+  })
+
+  return res.json({
+    success: "message sent"
+  })
+}
+
+const deleteChat = async (req, res) => {
+  const { id } = req.body;
+  const deleted = await chatModel.deleteOne({ _id: id });
+  if (deleted) {
+    return res.json({
+      success: "Chat Deleted"
+    })
+  }
+}
+
+const chatSend = async (req, res) => {
+  const { value, from, email } = req.body;
+
+  if (!value) {
     return res.json({
       error: "Message field is required"
     })
@@ -21,7 +97,7 @@ const chatSend = async (req, res) => {
     })
   }
 
-  if(!email){
+  if (!email) {
     return res.json({
       error: "Email Not Found"
     })
@@ -29,12 +105,12 @@ const chatSend = async (req, res) => {
   const createNewChat = await chatModel.create({
     from: from,
     email: email,
-    message: message,
+    message: value,
     tmp_stp: new Date()
   })
 
-  if(createNewChat){
-    const chat = await chatModel.findOne({email: email});
+  if (createNewChat) {
+    const chat = await chatModel.find({ email: email });
     return res.json({
       chat: chat
     })
@@ -44,10 +120,10 @@ const chatSend = async (req, res) => {
 const getAdminChat = async (req, res) => {
   const { email } = req.body;
 
-  const getChat = await chatModel.findOne({ email: email });
+  const getChat = await chatModel.find({ email: email });
   if (getChat) {
     return res.json({
-      chats: getChat
+      chat: getChat
     });
   }
 
@@ -549,6 +625,7 @@ module.exports = {
   getUser,
   getUsers,
   chatSend,
+  deleteChat,
   loginUser,
   createUser,
   loginAdmin,
@@ -559,5 +636,7 @@ module.exports = {
   AdminGetCrypto,
   withdrawCrypto,
   getBankRecords,
-  getCryptoRecords
+  getCryptoRecords,
+  userNotification,
+  notificationAdder,
 };
