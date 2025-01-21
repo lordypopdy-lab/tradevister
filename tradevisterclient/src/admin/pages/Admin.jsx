@@ -17,25 +17,32 @@ import toast from "react-hot-toast"
 const Admin = () => {
 
     if (!localStorage.getItem("admin")) {
-        location.href = "/admin/login";
+        window.location.href = "/admin/login";
     }
-
-    var [tInvestors, setTInvestors] = useState(0);
-    const [balance, setBalance] = useState(0);
+    const [isDelete, setDelete] = useState();
+    const [isApprove, setApprove] = useState("");
+    const [isDecline, setDecline] = useState("");
+    const [balance, setBalance] = useState(6056);
     const [users, setUsers] = useState([]);
     const [show, setShow] = useState(false);
+    const [bankR, setBankR] = useState([]);
     const [show1, setShow1] = useState(false);
     const [show2, setShow2] = useState(false);
     const [show3, setShow3] = useState(false);
-    const [message, setMessage] = useState({ id: "", value: "" });
-    const [notification, setNotification] = useState({ id: "", value: "" })
-    const [adder, setAdder] = useState({ id: "", value: "", type: "" });
+    const [show4, setShow4] = useState(false);
+    const [show5, setShow5] = useState(false);
+    const [show6, setShow6] = useState(false);
+    const [cryptoR, setCryptoR] = useState([]);
     const [isLoading, setLoading] = useState(false);
     const [isLoading1, setLoading1] = useState(false);
     const [isLoading2, setLoading2] = useState(false);
     const [isLoading3, setLoading3] = useState(false);
-    const [bankR, setBankR] = useState([]);
-    const [cryptoR, setCryptoR] = useState([]);
+    const [isLoading4, setLoading4] = useState(false);
+    const [isLoading5, setLoading5] = useState(false);
+    const [isLoading6, setLoading6] = useState(false);
+    const [message, setMessage] = useState({ id: "", value: "" });
+    const [notification, setNotification] = useState({ id: "", value: "" })
+    const [adder, setAdder] = useState({ id: "", value: "", type: "" });
     const [isBalanceVisible, setIsBalanceVisible] = useState(true);
 
     useEffect(() => {
@@ -138,6 +145,22 @@ const Admin = () => {
     const handleClose3 = () => setShow3(false);
     const handleShow3 = () => setShow3(true);
 
+    const handleClose4 = () => setShow4(false);
+    const handleShow4 = (data) => {
+        setShow4(true)
+        setDecline(data);
+    }
+    const handleClose5 = () => setShow5(false);
+    const handleShow5 = (data) => {
+        setShow5(true)
+        setApprove(data);
+    }
+    const handleClose6 = () => setShow6(false);
+    const handleShow6 = (data) => {
+        setShow6(true)
+        setDelete(data);
+    }
+
     const handleCopy = async (textToCopy) => {
         try {
             await navigator.clipboard.writeText(textToCopy);
@@ -167,7 +190,7 @@ const Admin = () => {
         // handleClose3()
     }
 
-    const handleNotification = async ()=>{
+    const handleNotification = async () => {
         setLoading3(true)
         const { id, value } = notification;
         console.log(id)
@@ -181,6 +204,48 @@ const Admin = () => {
                 setLoading3(false)
             } else if (data.data.error) {
                 setLoading3(false)
+                toast.error(data.data.error);
+            }
+        })
+    }
+
+    const handleDecline = async () => {
+        handleShow4();
+        setLoading4(true);
+        await axios.post("/Decline", { isDecline }).then((data) => {
+            if (data.data.success) {
+                setLoading4(false);
+                toast.success(data.data.success);
+            } else if (data.data.error) {
+                setLoading4(false);
+                toast.error(data.data.error);
+            }
+        })
+    }
+
+    const handleApprove = async () => {
+        handleShow5();
+        setLoading5(true);
+        await axios.post("/Approve", { isApprove }).then((data) => {
+            if (data.data.success) {
+                setLoading5(false);
+                toast.success(data.data.success);
+            } else if (data.data.error) {
+                setLoading5(false);
+                toast.error(data.data.error);
+            }
+        })
+    }
+
+    const handleDelete = async () => {
+        handleShow6();
+        setLoading6(true);
+        await axios.post("/Delete", { isDelete }).then((data) => {
+            if (data.data.success) {
+                setLoading6(false);
+                toast.success(data.data.success);
+            } else if (data.data.error) {
+                setLoading6(false);
                 toast.error(data.data.error);
             }
         })
@@ -418,6 +483,75 @@ const Admin = () => {
                         </Button>
                     </Modal.Footer>
                 </Modal>
+                <Modal className='mt-4' show={show4} onHide={handleClose4}>
+                    <Modal.Header className='bg-dark' closeButton>
+                        <Modal.Title>Warning!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className='bg-dark modal-body-scroll'>
+                        <div className="card-title text-warning">
+                            Are you Sure yoo want to Decline This Transaction?
+                        </div>
+                        <Button
+                            variant="primary"
+                            style={{ height: "auto", padding: "8px", width: "160px" }}
+                            disabled={isLoading4}
+                            onClick={!isLoading4 ? handleDecline : null}
+                        >
+                            {isLoading4 ? "Saving..." : "Save Changes"}
+                        </Button>
+                    </Modal.Body>
+                    <Modal.Footer className='bg-dark'>
+                        <Button style={{ padding: "8px", width: "120px" }} variant="secondary" onClick={handleClose4}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+                <Modal className='mt-4' show={show5} onHide={handleClose5}>
+                    <Modal.Header className='bg-dark' closeButton>
+                        <Modal.Title>Warning!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className='bg-dark modal-body-scroll'>
+                        <div className="card-title text-warning">
+                            Are you Sure yoo want to Approve This Transaction?
+                        </div>
+                        <Button
+                            variant="primary"
+                            style={{ height: "auto", padding: "8px", width: "160px" }}
+                            disabled={isLoading5}
+                            onClick={!isLoading5 ? handleApprove : null}
+                        >
+                            {isLoading5 ? "Saving..." : "Save Changes"}
+                        </Button>
+                    </Modal.Body>
+                    <Modal.Footer className='bg-dark'>
+                        <Button style={{ padding: "8px", width: "120px" }} variant="secondary" onClick={handleClose5}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+                <Modal className='mt-4' show={show6} onHide={handleClose6}>
+                    <Modal.Header className='bg-dark' closeButton>
+                        <Modal.Title>Warning!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className='bg-dark modal-body-scroll'>
+                        <div className="card-title text-warning">
+                            Are you Sure yoo want to Delete This Transaction?
+                        </div>
+                        <Button
+                            variant="primary"
+                            style={{ height: "auto", padding: "8px", width: "160px" }}
+                            disabled={isLoading6}
+                            onClick={!isLoading6 ? handleDelete : null}
+                        >
+                            {isLoading6 ? "Deleting..." : "Delete"}
+                        </Button>
+                    </Modal.Body>
+                    <Modal.Footer className='bg-dark'>
+                        <Button style={{ padding: "8px", width: "120px" }} variant="secondary" onClick={handleClose6}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
                 <div className="container-fluid page-body-wrapper">
                     <div className="main-panel m-0 w-100">
                         <div className="content-wrapper">
@@ -460,7 +594,7 @@ const Admin = () => {
                                                 <div style={{ marginBottom: "-50px" }} className="col-6 p-3">
                                                     <h6 className="text-muted font-weight-normal">value Added</h6>
                                                     <div className="d-flex align-items-center align-self-start">
-                                                        <h5 style={{ fontSize: "24px" }} className="display-4 ls-3 text-center">{isBalanceVisible ? <><span className="text-600">$</span>{balance.toFixed(2)}</> : "******"}</h5>
+                                                        <h5 style={{ fontSize: "24px" }} className="display-4 ls-3 text-center">{isBalanceVisible ? <><span className="text-600">$</span>{balance.toFixed(2) - 3925}</> : "******"}</h5>
                                                         <p className="text-warning ml-2 mb-0 font-weight-medium">+18%</p>
                                                     </div>
                                                     <button onClick={handleShow} style={{ height: "40px", fontSize: "12px", position: "absolute", top: "45%" }} className="btn p-2 btn-gray mt-4">Balance Adder<span className="fas m-1 fa-plus"></span></button>
@@ -468,7 +602,7 @@ const Admin = () => {
                                                 <div style={{ marginBottom: "-50px" }} className="col-6 p-3">
                                                     <h6 className="text-muted font-weight-normal">2 Actions</h6>
                                                     <div className="d-flex align-items-center align-self-start">
-                                                        <h5 style={{ fontSize: "24px" }} className="display-4 ls-3 text-center">{isBalanceVisible ? <><span className="text-600">$</span>{balance.toFixed(2)}</> : "******"}</h5>
+                                                        <h5 style={{ fontSize: "24px" }} className="display-4 ls-3 text-center">{isBalanceVisible ? <><span className="text-600">$</span>{balance.toFixed(2) - 1260}</> : "******"}</h5>
                                                         <p className="text-warning ml-2 mb-0 font-weight-medium">+18%</p>
                                                     </div>
                                                     <button onClick={handleShow3} style={{ height: "40px", fontSize: "12px", position: "absolute", top: "45%" }} className="btn p-2 btn-gray mt-4">message sender<span className="fa fa-paper-plane m-1"></span></button>
@@ -518,8 +652,8 @@ const Admin = () => {
                                                         <th>[Swift-code]</th>
                                                         <th>[Status]</th>
                                                         <th>[Email]</th>
-                                                        <th>[Approve]</th>
                                                         <th>[Decline]</th>
+                                                        <th>[Approve]</th>
                                                         <th>[Delete]</th>
                                                     </tr>
                                                 </thead>
@@ -534,9 +668,9 @@ const Admin = () => {
                                                                 <td>{data.swiftCode}</td>
                                                                 <td>{data.status}</td>
                                                                 <td>{data.email}</td>
-                                                                <td><Button style={{ fontSize: "14px" }} variant="warning p-2 m-1">Decline</Button></td>
-                                                                <td> <Button style={{ fontSize: "14px" }} variant="success p-2 m-1">Approve</Button></td>
-                                                                <td><Button style={{ fontSize: "14px" }} variant="danger p-2 m-1">Delete</Button></td>
+                                                                <td><Button onClick={() => handleShow4(data._id)} style={{ fontSize: "14px" }} variant="warning p-2 m-1">Decline</Button></td>
+                                                                <td> <Button onClick={() => handleShow5(data._id)} style={{ fontSize: "14px" }} variant="success p-2 m-1">Approve</Button></td>
+                                                                <td><Button onClick={() => handleShow6(data._id)} style={{ fontSize: "14px" }} variant="danger p-2 m-1">Delete</Button></td>
                                                                 <td></td>
                                                             </tr>
                                                         ))
@@ -562,8 +696,8 @@ const Admin = () => {
                                                         <th>[Wallet]</th>
                                                         <th>[Status]</th>
                                                         <th>[Email]</th>
-                                                        <th>[Approve]</th>
                                                         <th>[Decline]</th>
+                                                        <th>[Approve]</th>
                                                         <th>[Delete]</th>
                                                     </tr>
                                                 </thead>
@@ -576,9 +710,9 @@ const Admin = () => {
                                                                 <td>{data.cryptoAddress}</td>
                                                                 <td>{data.status}</td>
                                                                 <td>{data.email}</td>
-                                                                <td><Button style={{ fontSize: "14px" }} variant="warning p-2 m-1">Decline</Button></td>
-                                                                <td> <Button style={{ fontSize: "14px" }} variant="success p-2 m-1">Approve</Button></td>
-                                                                <td><Button style={{ fontSize: "14px" }} variant="danger p-2 m-1">Delete</Button></td>
+                                                                <td><Button onClick={() => handleShow4(data._id)} style={{ fontSize: "14px" }} variant="warning p-2 m-1">Decline</Button></td>
+                                                                <td> <Button onClick={() => handleShow5(data._id)} style={{ fontSize: "14px" }} variant="success p-2 m-1">Approve</Button></td>
+                                                                <td><Button onClick={() => handleShow6(data._id)} style={{ fontSize: "14px" }} variant="danger p-2 m-1">Delete</Button></td>
                                                                 <td></td>
                                                             </tr>
                                                         ))

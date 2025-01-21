@@ -7,6 +7,7 @@ import Deposite from "./pages/Deposite";
 import Withdraw from "./pages/Withdraw";
 import Settings from "./pages/Settings";
 import Dashboard from "./pages/Dashboard";
+import BuyAssets from "./pages/BuyAssets";
 import AdminLogin from "./admin/pages/AdminLogin";
 import AdminContact from "./admin/pages/AdminContact";
 import axios from 'axios';
@@ -14,7 +15,7 @@ import { Toaster } from 'react-hot-toast';
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-axios.defaults.baseURL = 'https://tradevisterserver.vercel.app';
+axios.defaults.baseURL = 'http://localhost:8080';
 axios.defaults.withCredentials = true;
 
 //https://tradevisterserver.vercel.app
@@ -27,6 +28,7 @@ function App() {
       <Router>
         <Routes>
           <Route index="/" element={<Index />} />
+          <Route path="/buy" element={<BuyAssets />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/contact" element={<Contact />} />

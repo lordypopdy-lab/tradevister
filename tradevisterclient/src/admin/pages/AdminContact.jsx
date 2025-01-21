@@ -89,8 +89,8 @@ const AdminContact = () => {
                           <div className="card-body card-gradient">
                             <div className="form-group">
                               {data.from === "admin" ? (
-                                <p>
-                                  <div style={{ float: "right" }} className="card-title text-warning">
+                                <p style={{textAlign: "right"}}>
+                                  <div style={{ float: "right" }} className="card-title m-3 text-warning">
                                     you
                                   </div>
                                   {data.message} <br />

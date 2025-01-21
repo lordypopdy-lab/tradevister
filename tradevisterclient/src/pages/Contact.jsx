@@ -95,8 +95,8 @@ const Contact = () => {
                                   {data.message} <br />
                                 </p>
                               ) : data.from === "user" ? (
-                                <p>
-                                   <div style={{float: "right"}} className="card-title text-warning">
+                                <p style={{textAlign: "right"}}>
+                                   <div style={{float: "right"}} className="card-title m-3 text-warning">
                                     you
                                   </div>
                                   {data.message} <br />
