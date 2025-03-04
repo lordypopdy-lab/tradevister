@@ -18,7 +18,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 axios.defaults.baseURL = 'https://tradevisterserver.vercel.app';
 axios.defaults.withCredentials = true;
 
-//https://tradevisterserver.vercel.app
+//http://localhost:8080 
 
 function App() {
 

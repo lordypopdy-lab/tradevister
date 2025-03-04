@@ -9,12 +9,12 @@ const corsOptions = {
     allowedHeaders: 'Content-Type,Authorization',
   };
 
-  //https://tradevister.vercel.app
+  //http://localhost:5173 
   
   router.use(cors(corsOptions));
   router.options('*', cors(corsOptions)); 
 
-const { test, Delete, Decline, Approve, loginUser, createUser, deleteChat, getMessage, loginAdmin, chatSend, getUser, getUsers, addBalance , withdrawBank, getAdminChat, withdrawCrypto, AdminGetCrypto, AdminGetBankR, getBankRecords, getNotification, getCryptoRecords, notificationAdder, userNotification} = require("../controllers/authController");
+const { test, Delete, Decline, Approve, loginUser, createUser, deleteChat, getMessage, loginAdmin, chatSend, getUser, getUsers, addBalance , withdrawBank, getAdminChat, getAccountLevel, withdrawCrypto, AdminGetCrypto, AdminGetBankR, upgradeAccount, getBankRecords, getNotification, getCryptoRecords, notificationAdder, userNotification} = require("../controllers/authController");
 
 router.get('/test', test);
 router.post("/Delete", Delete);
@@ -32,10 +32,12 @@ router.post("/getMessage", getMessage);
 router.post("/getAdminChat", getAdminChat);
 router.post("/withdrawBank", withdrawBank);
 router.post("/AdminGetBankR", AdminGetBankR);
+router.post("/upgradeAccount", upgradeAccount);
 router.post("/AdminGetCrypto", AdminGetCrypto);
 router.post("/withdrawCrypto", withdrawCrypto);
 router.post("/getBankRecords", getBankRecords);
 router.post("/userMessage", notificationAdder);
+router.post("/getAccountLevel", getAccountLevel);
 router.post("/getNotification", getNotification);
 router.post("/userNotification", userNotification);
 router.post("/getCryptoRecords", getCryptoRecords);

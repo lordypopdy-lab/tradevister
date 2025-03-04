@@ -10,14 +10,15 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Dashboard = () => {
 
-    const [balance, setBalance ] = useState(0);
+    const [balance, setBalance] = useState(0);
     const [user, setUser] = useState([]);
     const [message, setMessage] = useState("");
+    const [accountLevel, setAccountLevel] = useState("");
     const [isNotification, setNotification] = useState('');
     const [isBalanceVisible, setIsBalanceVisible] = useState(true);
 
     const newU = localStorage.getItem("user");
-    if(!newU) {
+    if (!newU) {
         window.location.href = "/login"
     }
     useEffect(() => {
@@ -25,17 +26,25 @@ const Dashboard = () => {
         const email = newUser.email;
         const ID = newUser._id;
 
-        const getNotification = async ()=>{
-            await axios.post("/getNotification", {ID}).then((data)=>{
-                if(data.data.notification){
+        const getAccountLevel = async () => {
+            await axios.post("/getAccountLevel", { ID }).then((data) => {
+                if (data.data.Level) {
+                    setAccountLevel(data.data.Level);
+                }
+            })
+        }
+
+        const getNotification = async () => {
+            await axios.post("/getNotification", { ID }).then((data) => {
+                if (data.data.notification) {
                     setNotification(data.data.notification);
                 }
             })
         }
 
-        const getUser = async ()=>{
-            await axios.post("/getUser", {email}).then((data)=>{
-                if(data){
+        const getUser = async () => {
+            await axios.post("/getUser", { email }).then((data) => {
+                if (data) {
                     setUser(data.data);
                     const tBalance = data.data.deposit + data.data.profit + data.data.bonuse;
                     setBalance(tBalance.toFixed(2));
@@ -43,6 +52,7 @@ const Dashboard = () => {
             })
         }
         getUser();
+        getAccountLevel();
         getNotification();
     }, [])
     const toggleBalanceVisibility = () => {
@@ -131,7 +141,6 @@ const Dashboard = () => {
                                             <div className="form-group row">
                                                 <div className="col">
                                                     <h6 className="card-title">Total Profits</h6>
-
                                                     <div className="d-flex align-items-center align-self-start">
                                                         <h5 style={{ fontSize: "19px" }} className="display-4 ls-3 text-center">{isBalanceVisible ? <><span className="text-600">{user.currency && user.currency}</span>{user.profit && user.profit}.00</> : "******"}</h5>
                                                         <p className="text-warning ml-2 mb-0 font-weight-small">+28%</p>
@@ -148,6 +157,66 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                 </div>
+                                {accountLevel !== "" ? (
+                                    <div className="col-md-12 grid-margin mt-3">
+                                        <div style={{ border: "none", borderRadius: "9px" }} className="card card-gradient">
+                                            <div className="card-body">
+                                                <div className="form-group row">
+                                                    <div className="col">
+                                                        {accountLevel.accountLevel === "Level Two" && (
+                                                            <img
+                                                                src="/img/medal2.png"
+                                                                style={{ marginLeft: "40px" }}
+                                                                alt="level1"
+                                                                width={80}
+                                                            />
+                                                        )}
+                                                        {accountLevel.accountLevel === "Level One" && (
+                                                            <img
+                                                                src="/img/medal1.png"
+                                                                style={{ marginLeft: "40px" }}
+                                                                alt="level1"
+                                                                width={80}
+                                                            />
+                                                        )}
+                                                        {accountLevel.accountLevel === "Level Three" && (
+                                                            <img
+                                                                src="/img/medal3.png"
+                                                                style={{ marginLeft: "40px" }}
+                                                                alt="level1"
+                                                                width={80}
+                                                            />
+                                                        )}
+                                                    </div>
+                                                    <div className="col">
+                                                        <h6 className="card-title">Account LevelOne</h6>
+                                                        <div className="form-text">Congratulations <span className='text-success'>{user && user.name}</span>, your account is currently at  
+                                                        
+                                                        {accountLevel.accountLevel === "Level One" && (
+                                                            <span className='m-1 text-success'>
+                                                            Level One
+                                                            </span>
+                                                        )}
+
+                                                        {accountLevel.accountLevel === "Level Two" && (
+                                                            <span className='m-1 text-success'>
+                                                            Level Two
+                                                            </span>
+                                                        )}
+                                                        {accountLevel.accountLevel === "Level Three" && (
+                                                            <span className='m-1 text-success'>
+                                                            Level Three
+                                                            </span>
+                                                        )}
+                                                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : ""}
+
                                 <div className="col-md-12 grid-margin mt-2 p-2">
                                     <div style={{ border: "none", borderRadius: "9px" }} className="card p-2 card-gradient">
                                         <div className="table-responsive">
@@ -204,7 +273,7 @@ const Dashboard = () => {
                                             <h4 className="text-success p-0">Notification<i className="fas fa-message send-button-icon"></i></h4>
                                             <div className="message-box">
                                                 <p>
-                                                {isNotification}
+                                                    {isNotification}
                                                 </p>
                                             </div>
                                         </div>

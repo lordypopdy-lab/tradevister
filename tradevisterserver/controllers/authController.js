@@ -5,46 +5,142 @@ const bankModel = require("../models/bankModel");
 const chatModel = require("../models/chatModel");
 const cryptoModel = require("../models/cryptoModel");
 const adminMessage = require("../models/adminMessage");
+const accountUpgradeModel = require("../models/accountLevel");
 const { hashPassword, comparePassword } = require("../helpers/auth");
+
+// const upgradeAccount = async (req, res) => {
+//   const { ID, ULevel } = req.body;
+
+//   const ifExist = await accountUpgradeModel.findOne({ userID: ID });
+//   const checkUser = await User.findOne({_id : ID});
+
+//   if(!checkUser){
+//     return res.status(404).json({
+//       error: "Unidentify user ID"
+//     })
+//   }
+
+//   if (!ifExist) {
+//     await accountUpgradeModel.create({
+//       userID: ID,
+//       accountLevel: ULevel
+//     })
+
+//     return res.status(200).json({
+//       success: `User: ${ID} has been upgraded to Level: ${ULevel}`
+//     })
+//   }
+
+//   if (ifExist && ifExist.accountLevel == ULevel) {
+//     return res.json({
+//       error: `user account already in Level: ${ifExist.accountLevel}`
+//     })
+//   }
+
+//   await accountUpgradeModel.updateOne({ userID: ID }, { $set: { accountLevel: ULevel } });
+//   return res.json({
+//     success: `user ${ID} has been upgraded to level ${ULevel}`
+//   })
+
+// }
+
+const mongoose = require("mongoose");
+
+const getAccountLevel = async (req, res) => {
+      const {ID} = req.body;
+      const ifExist = await accountUpgradeModel.findOne({userID: ID});
+
+      if(ifExist){
+        return res.json({
+          Level: ifExist
+        })
+      }
+
+}
+
+const upgradeAccount = async (req, res) => {
+  try {
+    const { ID, ULevel } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(ID)) {
+      return res.json({ error: "Invalid user ID format" });
+    }
+
+    const checkUser = await User.findById(ID);
+    if (!checkUser) {
+      return res.status(404).json({ error: "User ID not found" });
+    }
+
+    const ifExist = await accountUpgradeModel.findOne({ userID: ID });
+
+    if (!ifExist) {
+
+      await accountUpgradeModel.create({
+        userID: ID,
+        accountLevel: ULevel,
+      });
+
+      return res.json({
+        success: `User ${ID} has been upgraded to ${ULevel}`,
+      });
+    }
+
+    if (ifExist.accountLevel === ULevel) {
+      return res.json({
+        error: `User account is already at ${ifExist.accountLevel}`,
+      });
+    }
+
+    await accountUpgradeModel.updateOne({ userID: ID }, { $set: { accountLevel: ULevel } });
+
+    return res.json({
+      success: `User ${ID} has been upgraded to ${ULevel}`,
+    });
+  } catch (error) {
+    console.error("Error upgrading account:", error);
+    return res.json({ error: "Internal server error" });
+  }
+};
+
 
 const getMessage = async (req, res) => {
   const { ID } = req.body;
-  
-  const getNoti = await adminMessage.findOne({userID: ID});
 
-  if(getNoti){
+  const getNoti = await adminMessage.findOne({ userID: ID });
+
+  if (getNoti) {
     return res.json(getNoti)
   }
 
-  return res.json({data: "No data"});
+  return res.json({ data: "No data" });
 }
 
 const getNotification = async (req, res) => {
-  const {ID} = req.body;
-  const getNoti = await adminMessage.findOne({userID: ID});
+  const { ID } = req.body;
+  const getNoti = await adminMessage.findOne({ userID: ID });
 
-  if(getNoti){
+  if (getNoti) {
     return res.json(getNoti)
   }
 
-  return res.json({data: "No data"});
+  return res.json({ data: "No data" });
 }
 
 const Delete = async (req, res) => {
   const { isDelete } = req.body;
 
-  const checkBank = await bankModel.findOne({_id: isDelete});
-  const checkCrypto = await cryptoModel.findOne({_id: isDelete});
+  const checkBank = await bankModel.findOne({ _id: isDelete });
+  const checkCrypto = await cryptoModel.findOne({ _id: isDelete });
 
-  if(checkBank){
-    await bankModel.deleteOne({_id: isDelete})
+  if (checkBank) {
+    await bankModel.deleteOne({ _id: isDelete })
     return res.json({
       success: "Transaction Deleted Successfully!"
     })
   }
 
-  if(checkCrypto){
-    await cryptoModel.deleteOne({_id: isDelete});
+  if (checkCrypto) {
+    await cryptoModel.deleteOne({ _id: isDelete });
     return res.json({
       success: "Transaction Deleted Successfully!"
     })
@@ -59,18 +155,18 @@ const Delete = async (req, res) => {
 const Approve = async (req, res) => {
   const { isApprove } = req.body;
 
-  const checkBank = await bankModel.findOne({_id: isApprove});
-  const checkCrypto = await cryptoModel.findOne({_id: isApprove});
+  const checkBank = await bankModel.findOne({ _id: isApprove });
+  const checkCrypto = await cryptoModel.findOne({ _id: isApprove });
 
-  if(checkBank){
-    await bankModel.updateOne({_id: isApprove}, {$set: {status: "Approved"}});
+  if (checkBank) {
+    await bankModel.updateOne({ _id: isApprove }, { $set: { status: "Approved" } });
     return res.json({
       success: "Transaction approved Successfully!"
     })
   }
 
-  if(checkCrypto){
-    await cryptoModel.updateOne({_id: isApprove}, {$set: {status: "Approved"}});
+  if (checkCrypto) {
+    await cryptoModel.updateOne({ _id: isApprove }, { $set: { status: "Approved" } });
     return res.json({
       success: "Transaction Approved Successfully!"
     })
@@ -85,18 +181,18 @@ const Approve = async (req, res) => {
 const Decline = async (req, res) => {
   const { isDecline } = req.body;
 
-  const checkBank = await bankModel.findOne({_id: isDecline});
-  const checkCrypto = await cryptoModel.findOne({_id: isDecline});
+  const checkBank = await bankModel.findOne({ _id: isDecline });
+  const checkCrypto = await cryptoModel.findOne({ _id: isDecline });
 
-  if(checkBank){
-    await bankModel.updateOne({_id: isDecline}, {$set: {status: "Declined"}});
+  if (checkBank) {
+    await bankModel.updateOne({ _id: isDecline }, { $set: { status: "Declined" } });
     return res.json({
       success: "Transaction Declined Successfully!"
     })
   }
 
-  if(checkCrypto){
-    await cryptoModel.updateOne({_id: isDecline}, {$set: {status: "Declined"}});
+  if (checkCrypto) {
+    await cryptoModel.updateOne({ _id: isDecline }, { $set: { status: "Declined" } });
     return res.json({
       success: "Transaction Declined Successfully!"
     })
@@ -130,7 +226,7 @@ const userNotification = async (req, res) => {
     })
   }
 
-   await adminMessage.create({
+  await adminMessage.create({
     userID: id,
     notification: value,
   })
@@ -163,7 +259,7 @@ const notificationAdder = async (req, res) => {
     })
   }
 
-   await adminMessage.create({
+  await adminMessage.create({
     userID: id,
     submitMessage: value,
   })
@@ -738,6 +834,8 @@ module.exports = {
   getAdminChat,
   withdrawBank,
   AdminGetBankR,
+  upgradeAccount,
+  getAccountLevel,
   getNotification,
   AdminGetCrypto,
   withdrawCrypto,

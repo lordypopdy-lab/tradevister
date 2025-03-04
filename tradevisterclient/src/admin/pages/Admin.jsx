@@ -40,6 +40,7 @@ const Admin = () => {
     const [isLoading4, setLoading4] = useState(false);
     const [isLoading5, setLoading5] = useState(false);
     const [isLoading6, setLoading6] = useState(false);
+    const [UID, setUID] = useState({ ID: "", ULevel: "" });
     const [message, setMessage] = useState({ id: "", value: "" });
     const [notification, setNotification] = useState({ id: "", value: "" })
     const [adder, setAdder] = useState({ id: "", value: "", type: "" });
@@ -250,6 +251,31 @@ const Admin = () => {
             }
         })
     }
+
+    const upgradeAccount = async (event) => {
+        event.preventDefault();
+        const { ID, ULevel } = UID;
+        try {
+            await axios.post("/upgradeAccount", { ID, ULevel }).then((data) => {
+                if (data.data.success) {
+                    toast.success(data.data.success);
+                    setUID({
+                        ID: "",
+                        ULevel: ""
+                    })
+                } else if (data.data.error) {
+                    toast.error(data.data.error);
+                    setUID({
+                        ID: "",
+                        ULevel: ""
+                    })
+                }
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <div>
             <NavBar />
@@ -633,6 +659,42 @@ const Admin = () => {
                                                         <p className="text-warning ml-2 mb-0 font-weight-medium">+68%</p>
                                                     </div>
                                                     <button onClick={handleShow2} style={{ height: "40px", fontSize: "12px" }} className="btn p-2 btn-warning">[Investors]<span className="fas m-1 fa-arrow-down"></span></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-md-12 grid-margin mt-3">
+                                    <div style={{ border: "none", borderRadius: "9px" }} className="card card-gradient">
+                                        <div className="card-body">
+                                            <div className="form-group row">
+                                                <div className="row g-3 align-items-center">
+                                                    <h3>Account Upgrade</h3> <hr />
+                                                    <form onSubmit={upgradeAccount}>
+                                                        <div className="mb-3">
+                                                            <div id="emailHelp" className="form-text">Please provide the user ID to be Upgraded.</div>
+                                                            <input
+                                                                type="text"
+                                                                value={UID.ID}
+                                                                onChange={(e) => setUID({ ...UID, ID: e.target.value })}
+                                                                className="form-control bg-transparent"
+                                                            />
+                                                        </div>
+                                                        <div className="mb-3">
+                                                            <div id="emailHelp" className="form-text">Please select the Level you want to be upgraded to.</div>
+                                                            <select
+                                                                value={UID.ULevel}
+                                                                onChange={(e) => setUID({ ...UID, ULevel: e.target.value })}
+                                                                className="form-select bg-transparent form-select-sm"
+                                                                aria-label=".form-select-sm example">
+                                                                <option selected>Open this select Level</option>
+                                                                <option value="Level One">Level One</option>
+                                                                <option value="Level Two">Level Two</option>
+                                                                <option value="Level Three">Level Three</option>
+                                                            </select>
+                                                        </div>
+                                                        <button type="submit" className="btn p-2 btn-primary">Submit</button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
