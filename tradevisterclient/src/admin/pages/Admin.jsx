@@ -16,7 +16,7 @@ import toast from "react-hot-toast"
 
 const Admin = () => {
 
-    if (!localStorage.getItem("admin")) {
+    if (!localStorage.getItem("admin1")) {
         window.location.href = "/admin/login";
     }
     const [isDelete, setDelete] = useState();
@@ -47,7 +47,7 @@ const Admin = () => {
     const [isBalanceVisible, setIsBalanceVisible] = useState(true);
 
     useEffect(() => {
-        const Admin = JSON.parse(localStorage.getItem("admin"));
+        const Admin = JSON.parse(localStorage.getItem("admin1"));
         const email = Admin.email;
 
         const getCryptoRecords = async () => {

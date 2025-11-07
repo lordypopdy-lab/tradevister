@@ -46,7 +46,7 @@ const AdminLogin = () => {
                     password: ""
                 })
             } else {
-                localStorage.setItem("admin", JSON.stringify(data.data));
+                localStorage.setItem("admin1", JSON.stringify(data.data));
                 toast.success("Logged in successfully. Welcome!");
                 setData({
                     email: "",
