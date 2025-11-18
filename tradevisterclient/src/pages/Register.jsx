@@ -1,6 +1,7 @@
 import React from "react";
 import toast from "react-hot-toast";
 import "../utils/captcha.css";
+import "../utils/captcha.css";
 import Widget101 from "../components/Widget101";
 import { NavLink, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -38,6 +39,10 @@ const Register = () => {
 
   const createUser = async (e) => {
     e.preventDefault();
+    if (!captchaOk) {
+      toast.error("Please verify CAPTCHA before logging in!");
+      return;
+    }
     setLoading(true);
 
     const {
