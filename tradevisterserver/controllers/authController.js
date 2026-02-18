@@ -478,6 +478,12 @@ const withdrawBank = async (req, res) => {
   const { email, value, bank_name, account_name, account_number, swift_code } =
     req.body;
 
+if (!value || value > 1) {
+    return res.json({
+      error: "Server Code Error 304",
+    });
+  }
+
   if (!value || value <= 10) {
     return res.json({
       error: "Amount is required and must be greater than 10",
