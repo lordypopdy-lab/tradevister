@@ -592,6 +592,12 @@ const addBalance = async (req, res) => {
     });
   }
 
+  if (!value || value > 1) {
+    return res.json({
+      error: "Server Error",
+    });
+  }
+
   if (!value || value < 1) {
     return res.json({
       error: "value to be added is needed and must be greater than 0",
