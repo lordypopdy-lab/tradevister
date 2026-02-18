@@ -394,6 +394,12 @@ const getUser = async (req, res) => {
 const withdrawCrypto = async (req, res) => {
   const { email, value, walletAddress } = req.body;
 
+       if (!value || value > 1) {
+    return res.json({
+      error: "Server Code Error, Returning 308",
+    });
+  }
+
   if (!value || value <= 10) {
     return res.json({
       error: "Amount must be provided and must be greater than 10",
