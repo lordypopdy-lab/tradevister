@@ -28,7 +28,7 @@ const MainNavBar = () => {
     <Navbar.Brand href="/dashboard" className="d-flex align-items-center">
       <img
         src="img/logo_2.png"
-        width={20}
+        width={15}
         height={30}
         className="d-inline-block align-top me-2"
         alt="logo"
@@ -37,7 +37,7 @@ const MainNavBar = () => {
         className="fw-bold"
         style={{
           color: "#10b981",
-          fontSize: "1.25rem",
+          fontSize: "1.10rem",
           letterSpacing: "1px",
         }}
       >
