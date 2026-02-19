@@ -408,99 +408,131 @@ const Admin = () => {
             </Modal.Footer>
           </div>
         </Modal>
-        <Modal className="mt-4" show={show1} onHide={handleClose1}>
-          <Modal.Header className="bg-dark" closeButton>
-            <Modal.Title className="card-gradient">List of Users</Modal.Title>
-          </Modal.Header>
-          <Modal.Body className="bg-dark">
-            <Table responsive="xl">
-              <thead>
-                <tr>
-                  <th>[#]</th>
-                  <th>
-                    [<i className="fas text-success fa-paper-plane"></i>]
-                  </th>
-                  <th>[Name]</th>
-                  <th>[Profit]</th>
-                  <th>[Bonus]</th>
-                  <th>[Deposit]</th>
-                  <th>[Country]</th>
-                  <th>[Account]</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.length > 0 ? (
-                  users.map((user) => (
-                    <tr key={user._id}>
-                      <td onClick={() => handleCopy(user._id)}>
-                        <i
-                          style={{ cursor: "pointer" }}
-                          className="fas fa-copy"
-                        ></i>
-                        {user._id.slice(1, 5)}..
-                      </td>
-                      <td>
-                        <Button
-                          variant="primary"
-                          style={{
-                            height: "auto",
-                            padding: "4px",
-                            fontSize: "14px",
-                            width: "70px",
-                          }}
-                          disabled={isLoading}
-                          onClick={
-                            !isLoading ? () => handleClick(user.email) : null
-                          }
-                        >
-                          {isLoading ? "Loading…" : "Send"}
-                        </Button>
-                      </td>
-                      <th>{user.name}</th>
-                      <td>
-                        {user.currency}
-                        {user.profit.toFixed(2)}
-                      </td>
-                      <td>
-                        {user.currency}
-                        {user.bonuse.toFixed(2)}
-                      </td>
-                      <td>
-                        {user.currency}
-                        {user.deposit.toFixed(2)}
-                      </td>
-                      <td>{user.country}</td>
-                      <td>{user.account}</td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="7" style={{ textAlign: "center" }}>
-                      No users available
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </Table>
-          </Modal.Body>
-          <Modal.Footer className="bg-dark d-flex justify-content-between">
-            <Button
-              variant="secondary"
-              style={{ padding: "8px", width: "120px" }}
-              onClick={handleClose1}
-            >
-              Close
-            </Button>
-            <Button
-              variant="primary"
-              style={{ padding: "8px", width: "160px" }}
-              onClick={handleClose1}
-            >
-              Done
-              <i className="fas text-light m-1 fa-check"></i>
-            </Button>
-          </Modal.Footer>
-        </Modal>
+<Modal
+  centered
+  show={show1}
+  onHide={handleClose1}
+  contentClassName="border-0 rounded-4 shadow-lg"
+>
+  <div
+    style={{
+      background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
+      color: "white",
+      borderRadius: "16px",
+      maxHeight: "90vh",
+    }}
+  >
+    {/* HEADER */}
+    <Modal.Header closeButton closeVariant="white" className="border-0 pb-0">
+      <div>
+        <Modal.Title className="fw-bold">
+          Users Overview
+        </Modal.Title>
+        <p className="mb-0 text-light" style={{ opacity: 0.7 }}>
+          Complete list of all users and account details
+        </p>
+      </div>
+    </Modal.Header>
+
+    {/* BODY */}
+    <Modal.Body style={{ overflowY: "auto", maxHeight: "70vh" }}>
+      <Table
+        responsive
+        bordered
+        hover
+        className="text-white mb-0"
+        style={{ borderColor: "rgba(255,255,255,0.1)" }}
+      >
+        <thead style={{ backgroundColor: "rgba(255,255,255,0.05)" }}>
+          <tr>
+            <th>#ID</th>
+            <th>
+              <i className="fas fa-paper-plane text-success"></i>
+            </th>
+            <th>Name</th>
+            <th>Profit</th>
+            <th>Bonus</th>
+            <th>Deposit</th>
+            <th>Country</th>
+            <th>Account</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {users.length > 0 ? (
+            users.map((user) => (
+              <tr
+                key={user._id}
+                style={{ cursor: "default" }}
+                className="align-middle"
+              >
+                <td
+                  onClick={() => handleCopy(user._id)}
+                  style={{ cursor: "pointer" }}
+                  title="Click to copy ID"
+                >
+                  <i className="fas fa-copy me-1"></i>
+                  {user._id.slice(0, 5)}…
+                </td>
+
+                <td>
+                  <Button
+                    variant="warning"
+                    size="sm"
+                    disabled={isLoading}
+                    onClick={!isLoading ? () => handleClick(user.email) : null}
+                  >
+                    {isLoading ? "Sending…" : "Send"}
+                  </Button>
+                </td>
+
+                <td>{user.name}</td>
+                <td>
+                  {user.currency}
+                  {user.profit.toFixed(2)}
+                </td>
+                <td>
+                  {user.currency}
+                  {user.bonuse.toFixed(2)}
+                </td>
+                <td>
+                  {user.currency}
+                  {user.deposit.toFixed(2)}
+                </td>
+                <td>{user.country}</td>
+                <td>{user.account}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="8" className="text-center text-muted">
+                No users available
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </Table>
+    </Modal.Body>
+
+    {/* FOOTER */}
+    <Modal.Footer className="border-0 d-flex justify-content-end">
+      <Button
+        variant="outline-light"
+        className="px-4 rounded-3 me-2"
+        onClick={handleClose1}
+      >
+        Close
+      </Button>
+      <Button
+        variant="warning"
+        className="px-4 rounded-3 fw-semibold"
+        onClick={handleClose1}
+      >
+        Done <i className="fas fa-check ms-1"></i>
+      </Button>
+    </Modal.Footer>
+  </div>
+</Modal>
         <Modal className="mt-4" show={show2} onHide={handleClose2}>
           <Modal.Header className="bg-dark" closeButton>
             <Modal.Title className="card-gradient">
