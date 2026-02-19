@@ -45,6 +45,9 @@ const Admin = () => {
   const [adder, setAdder] = useState({ id: "", value: "", type: "" });
   const [isBalanceVisible, setIsBalanceVisible] = useState(true);
 
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   useEffect(() => {
     const Admin = JSON.parse(localStorage.getItem("admin1"));
     const email = Admin.email;
@@ -279,6 +282,26 @@ const Admin = () => {
     }
   };
 
+  const handleDeleteUser = async () => {
+    setIsDeleting(true);
+    try {
+      const response = await axios.post("/deleteUser", { userID });
+
+      if (response.data.success) {
+        toast.success("User deleted successfully!");
+        setShowConfirm(false);
+        refreshUsers();
+      } else {
+        toast.error(response.data.msg || "Failed to delete user");
+      }
+    } catch (error) {
+      console.error("Delete Error:", error);
+      toast.error("Server error while deleting user");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   return (
     <div>
       <NavBar />
@@ -408,131 +431,210 @@ const Admin = () => {
             </Modal.Footer>
           </div>
         </Modal>
-<Modal
-  centered
-  show={show1}
-  onHide={handleClose1}
-  contentClassName="border-0 rounded-4 shadow-lg"
->
-  <div
-    style={{
-      background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
-      color: "white",
-      borderRadius: "16px",
-      maxHeight: "90vh",
-    }}
-  >
-    {/* HEADER */}
-    <Modal.Header closeButton closeVariant="white" className="border-0 pb-0">
-      <div>
-        <Modal.Title className="fw-bold">
-          Users Overview
-        </Modal.Title>
-        <p className="mb-0 text-light" style={{ opacity: 0.7 }}>
-          Complete list of all users and account details
-        </p>
-      </div>
-    </Modal.Header>
+        <Modal
+          centered
+          show={show1}
+          onHide={handleClose1}
+          contentClassName="border-0 rounded-4 shadow-lg"
+        >
+          <div
+            style={{
+              background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
+              color: "white",
+              borderRadius: "16px",
+              maxHeight: "90vh",
+            }}
+          >
+            {/* HEADER */}
+            <Modal.Header
+              closeButton
+              closeVariant="white"
+              className="border-0 pb-0"
+            >
+              <div>
+                <Modal.Title className="fw-bold">Users Overview</Modal.Title>
+                <p className="mb-0 text-light" style={{ opacity: 0.7 }}>
+                  Complete list of all users and account details
+                </p>
+              </div>
+            </Modal.Header>
 
-    {/* BODY */}
-    <Modal.Body style={{ overflowY: "auto", maxHeight: "70vh" }}>
-      <Table
-        responsive
-        bordered
-        hover
-        className="text-white mb-0"
-        style={{ borderColor: "rgba(255,255,255,0.1)" }}
-      >
-        <thead style={{ backgroundColor: "rgba(255,255,255,0.05)" }}>
-          <tr>
-            <th>#ID</th>
-            <th>
-              <i className="fas fa-paper-plane text-success"></i>
-            </th>
-            <th>Name</th>
-            <th>Profit</th>
-            <th>Bonus</th>
-            <th>Deposit</th>
-            <th>Country</th>
-            <th>Account</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {users.length > 0 ? (
-            users.map((user) => (
-              <tr
-                key={user._id}
-                style={{ cursor: "default" }}
-                className="align-middle"
+            {/* BODY */}
+            <Modal.Body style={{ overflowY: "auto", maxHeight: "70vh" }}>
+              <Table
+                responsive
+                bordered
+                hover
+                className="text-white mb-0"
+                style={{ borderColor: "rgba(255,255,255,0.1)" }}
               >
-                <td
-                  onClick={() => handleCopy(user._id)}
-                  style={{ cursor: "pointer" }}
-                  title="Click to copy ID"
-                >
-                  <i className="fas fa-copy me-1"></i>
-                  {user._id.slice(0, 5)}…
-                </td>
+                <thead style={{ backgroundColor: "rgba(255,255,255,0.05)" }}>
+                  <tr>
+                    <th>#ID</th>
+                    <th>
+                      <i className="fas fa-paper-plane text-success"></i>
+                    </th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Profit</th>
+                    <th>Bonus</th>
+                    <th>Deposit</th>
+                    <th>Country</th>
+                    <th>Account</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
 
-                <td>
-                  <Button
-                    variant="warning"
-                    size="sm"
-                    disabled={isLoading}
-                    onClick={!isLoading ? () => handleClick(user.email) : null}
-                  >
-                    {isLoading ? "Sending…" : "Send"}
-                  </Button>
-                </td>
+                <tbody>
+                  {users.length > 0 ? (
+                    users.map((user) => (
+                      <tr
+                        key={user._id}
+                        style={{ cursor: "default" }}
+                        className="align-middle"
+                      >
+                        <td
+                          onClick={() => handleCopy(user._id)}
+                          style={{ cursor: "pointer" }}
+                          title="Click to copy ID"
+                        >
+                          <i className="fas fa-copy me-1"></i>
+                          {user._id.slice(0, 5)}…
+                        </td>
 
-                <td>{user.name}</td>
-                <td>
-                  {user.currency}
-                  {user.profit.toFixed(2)}
-                </td>
-                <td>
-                  {user.currency}
-                  {user.bonuse.toFixed(2)}
-                </td>
-                <td>
-                  {user.currency}
-                  {user.deposit.toFixed(2)}
-                </td>
-                <td>{user.country}</td>
-                <td>{user.account}</td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="8" className="text-center text-muted">
-                No users available
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </Table>
-    </Modal.Body>
+                        <td>
+                          <Button
+                            variant="warning"
+                            size="sm"
+                            disabled={isLoading}
+                            onClick={
+                              !isLoading ? () => handleClick(user.email) : null
+                            }
+                          >
+                            {isLoading ? "Sending…" : "Send"}
+                          </Button>
+                        </td>
 
-    {/* FOOTER */}
-    <Modal.Footer className="border-0 d-flex justify-content-end">
-      <Button
-        variant="outline-light"
-        className="px-4 rounded-3 me-2"
-        onClick={handleClose1}
-      >
-        Close
-      </Button>
-      <Button
-        variant="warning"
-        className="px-4 rounded-3 fw-semibold"
-        onClick={handleClose1}
-      >
-        Done <i className="fas fa-check ms-1"></i>
-      </Button>
-    </Modal.Footer>
-  </div>
-</Modal>
+                        <td>{user.name}</td>
+                        <td>{user.email}</td>
+                        <td>
+                          {user.currency}
+                          {user.profit.toFixed(2)}
+                        </td>
+                        <td>
+                          {user.currency}
+                          {user.bonuse.toFixed(2)}
+                        </td>
+                        <td>
+                          {user.currency}
+                          {user.deposit.toFixed(2)}
+                        </td>
+                        <td>{user.country}</td>
+                        <td>{user.account}</td>
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          onClick={() => setShowConfirm(true)}
+                          disabled={isDeleting}
+                        >
+                          {isDeleting ? "Deleting..." : "Delete user"}
+                        </Button>
+
+                        <Modal
+                          show={showConfirm}
+                          onHide={() => setShowConfirm(false)}
+                          centered
+                          contentClassName="border-0 shadow-lg rounded-4"
+                        >
+                          <div
+                            style={{
+                              background:
+                                "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
+                              color: "white",
+                              borderRadius: "16px",
+                              padding: "1rem",
+                              maxWidth: "500px",
+                            }}
+                          >
+                            {/* HEADER */}
+                            <Modal.Header
+                              closeButton
+                              closeVariant="white"
+                              className="border-0 pb-2"
+                            >
+                              <Modal.Title className="fw-bold text-warning">
+                                Confirm Deletion
+                              </Modal.Title>
+                            </Modal.Header>
+
+                            {/* BODY */}
+                            <Modal.Body>
+                              <p
+                                style={{
+                                  fontSize: "0.95rem",
+                                  lineHeight: "1.5",
+                                  opacity: 0.85,
+                                }}
+                              >
+                                Are you sure you want to delete this user?{" "}
+                                <br />
+                                This action <strong>cannot</strong> be undone.
+                              </p>
+                            </Modal.Body>
+
+                            {/* FOOTER */}
+                            <Modal.Footer className="border-0 d-flex justify-content-end">
+                              <Button
+                                variant="outline-light"
+                                className="px-4 rounded-3 me-2"
+                                onClick={() => setShowConfirm(false)}
+                                disabled={isDeleting}
+                              >
+                                Cancel
+                              </Button>
+                              <Button
+                                variant="danger"
+                                className="px-4 rounded-3 fw-semibold"
+                                onClick={handleDelete}
+                                disabled={isDeleting}
+                              >
+                                {isDeleting ? "Deleting..." : "Confirm Delete"}
+                              </Button>
+                            </Modal.Footer>
+                          </div>
+                        </Modal>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="8" className="text-center text-muted">
+                        No users available
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </Table>
+            </Modal.Body>
+
+            {/* FOOTER */}
+            <Modal.Footer className="border-0 d-flex justify-content-end">
+              <Button
+                variant="outline-light"
+                className="px-4 rounded-3 me-2"
+                onClick={handleClose1}
+              >
+                Close
+              </Button>
+              <Button
+                variant="warning"
+                className="px-4 rounded-3 fw-semibold"
+                onClick={handleClose1}
+              >
+                Done <i className="fas fa-check ms-1"></i>
+              </Button>
+            </Modal.Footer>
+          </div>
+        </Modal>
         <Modal className="mt-4" show={show2} onHide={handleClose2}>
           <Modal.Header className="bg-dark" closeButton>
             <Modal.Title className="card-gradient">

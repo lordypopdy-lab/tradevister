@@ -11,6 +11,23 @@ const { hashPassword, comparePassword } = require("../helpers/auth");
 
 const mongoose = require("mongoose");
 
+ const deleteUser = async (req, res) => {
+  try {
+    const { userID } = req.body;
+
+    const deletedUser = await User.findByIdAndDelete(userID);
+
+    if (!deletedUser) {
+      return res.status(404).json({ success: false, msg: "User not found" });
+    }
+
+    res.json({ success: true, msg: "User deleted successfully" });
+  } catch (error) {
+    console.error("Delete Error:", error);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+
 const getAccountLevel = async (req, res) => {
       const {ID} = req.body;
       const ifExist = await accountUpgradeModel.findOne({userID: ID});
@@ -557,12 +574,6 @@ const addBalance = async (req, res) => {
     });
   }
 
-  if (!value || value > 1) {
-    return res.json({
-      error: "Server Error",
-    });
-  }
-
   if (!value || value < 1) {
     return res.json({
       error: "value to be added is needed and must be greater than 0",
@@ -799,6 +810,7 @@ module.exports = {
   deleteChat,
   loginUser,
   getMessage,
+  deleteUser,
   createUser,
   loginAdmin,
   addBalance,
