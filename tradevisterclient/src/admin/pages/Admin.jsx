@@ -300,7 +300,6 @@ const Admin = () => {
       }
     } catch (error) {
       console.error(error);
-      toast.error("Server error while deleting user");
     } finally {
       setIsDeleting(false);
     }
