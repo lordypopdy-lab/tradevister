@@ -28,7 +28,7 @@ const MainNavBar = () => {
     <Navbar.Brand href="/dashboard" className="d-flex align-items-center">
       <img
         src="img/logo_2.png"
-        width={30}
+        width={20}
         height={30}
         className="d-inline-block align-top me-2"
         alt="logo"

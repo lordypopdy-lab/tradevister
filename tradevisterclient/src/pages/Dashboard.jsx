@@ -104,136 +104,124 @@ const Dashboard = () => {
               <Widget102 />
               <Widget101 />
               <div className="row">
-                <div className="col-xl-6 p-2 col-sm-6">
-                  <div
-                    className="card shadow-lg"
-                    style={{
-                      border: "none",
-                      borderRadius: "16px",
-                      background:
-                        "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
-                      color: "white",
-                      padding: "1rem",
-                    }}
-                  >
-                    {/* Balance Display */}
-                    <div className="d-flex justify-content-between align-items-center mb-3">
-                      <div>
-                        <h6
-                          className="text-muted mb-1"
-                          style={{ fontWeight: 400 }}
-                        >
-                          Current Balance
-                        </h6>
-                        <div className="d-flex align-items-center">
-                          <h3 className="mb-0" style={{ fontWeight: 700 }}>
-                            {isBalanceVisible ? (
-                              <>
-                                <span className="text-warning me-1">
-                                  {user?.currency}
-                                </span>
-                                {balance.toLocaleString()}
-                              </>
-                            ) : (
-                              "******"
-                            )}
-                          </h3>
-                          <button
-                            onClick={toggleBalanceVisibility}
-                            style={{
-                              background: "none",
-                              border: "none",
-                              cursor: "pointer",
-                              marginLeft: "12px",
-                            }}
-                            aria-label={
-                              isBalanceVisible ? "Hide Balance" : "Show Balance"
-                            }
-                          >
-                            <FontAwesomeIcon
-                              icon={isBalanceVisible ? faEyeSlash : faEye}
-                              className="text-warning"
-                              size="lg"
-                            />
-                          </button>
-                        </div>
-                      </div>
+<div className="col-xl-6 p-2 col-sm-6">
+  <div
+    className="card shadow-lg"
+    style={{
+      border: "none",
+      borderRadius: "16px",
+      background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+      color: "white",
+      padding: "1rem",
+    }}
+  >
+    {/* Balance Display */}
+    <div className="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <h6 className="text-muted mb-1" style={{ fontWeight: 400 }}>
+          Current Balance
+        </h6>
+        <div className="d-flex align-items-center">
+          <h3 className="mb-0" style={{ fontWeight: 700 }}>
+            {isBalanceVisible ? (
+              <>
+                <span className="text-warning me-1">{user?.currency}</span>
+                {balance.toLocaleString()}
+              </>
+            ) : (
+              "******"
+            )}
+          </h3>
+          <button
+            onClick={toggleBalanceVisibility}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              marginLeft: "12px",
+            }}
+            aria-label={isBalanceVisible ? "Hide Balance" : "Show Balance"}
+          >
+            <FontAwesomeIcon
+              icon={isBalanceVisible ? faEyeSlash : faEye}
+              className="text-warning"
+              size="lg"
+            />
+          </button>
+        </div>
+      </div>
 
-                      {/* Trend Icon */}
-                      <div
-                        className="d-flex justify-content-center align-items-center"
-                        style={{
-                          width: "50px",
-                          height: "50px",
-                          borderRadius: "12px",
-                          background: "rgba(255, 193, 7, 0.15)",
-                        }}
-                      >
-                        <i className="fas fa-arrow-up text-warning"></i>
-                      </div>
-                    </div>
+      {/* Trend Icon */}
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{
+          width: "50px",
+          height: "50px",
+          borderRadius: "12px",
+          background: "rgba(255, 193, 7, 0.15)",
+        }}
+      >
+        <i className="fas fa-arrow-up text-warning"></i>
+      </div>
+    </div>
 
-                    {/* Action Buttons */}
-                    <div className="d-flex justify-content-between mt-4">
-                      <a
-                        href="/deposite"
-                        className="btn flex-fill me-2"
-                        style={{
-                          background: "#0f172a",
-                          borderRadius: "12px",
-                          color: "white",
-                          fontWeight: 600,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: "10px",
-                          padding: "0.7rem 0",
-                        }}
-                      >
-                        <i className="fas fa-wallet text-warning p-2 bg-dark rounded-circle"></i>
-                        Deposite
-                      </a>
+    {/* Action Buttons */}
+    <div
+      className="d-flex flex-wrap justify-content-between mt-4 gap-2"
+    >
+      <a
+        href="/deposite"
+        className="btn flex-fill d-flex align-items-center justify-content-center"
+        style={{
+          background: "#0f172a",
+          borderRadius: "12px",
+          color: "white",
+          fontWeight: 600,
+          gap: "8px",
+          padding: "0.5rem 0",
+          fontSize: "0.85rem",
+        }}
+      >
+        <i className="fas fa-wallet text-warning p-2 bg-dark rounded-circle"></i>
+        Deposit
+      </a>
 
-                      <a
-                        href="/withdraw"
-                        className="btn flex-fill me-2"
-                        style={{
-                          background: "#0f172a",
-                          borderRadius: "12px",
-                          color: "white",
-                          fontWeight: 600,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: "10px",
-                          padding: "0.7rem 0",
-                        }}
-                      >
-                        <i className="fas fa-paper-plane text-warning p-2 bg-dark rounded-circle"></i>
-                        Withdraw
-                      </a>
+      <a
+        href="/withdraw"
+        className="btn flex-fill d-flex align-items-center justify-content-center"
+        style={{
+          background: "#0f172a",
+          borderRadius: "12px",
+          color: "white",
+          fontWeight: 600,
+          gap: "8px",
+          padding: "0.5rem 0",
+          fontSize: "0.85rem",
+        }}
+      >
+        <i className="fas fa-paper-plane text-warning p-2 bg-dark rounded-circle"></i>
+        Withdraw
+      </a>
 
-                      <a
-                        href="/buy"
-                        className="btn flex-fill"
-                        style={{
-                          background: "#0f172a",
-                          borderRadius: "12px",
-                          color: "white",
-                          fontWeight: 600,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: "10px",
-                          padding: "0.7rem 0",
-                        }}
-                      >
-                        <i className="fas fa-credit-card text-warning p-2 bg-dark rounded-circle"></i>
-                        Buy Assets
-                      </a>
-                    </div>
-                  </div>
-                </div>
+      <a
+        href="/buy"
+        className="btn flex-fill d-flex align-items-center justify-content-center"
+        style={{
+          background: "#0f172a",
+          borderRadius: "12px",
+          color: "white",
+          fontWeight: 600,
+          gap: "8px",
+          padding: "0.5rem 0",
+          fontSize: "0.85rem",
+        }}
+      >
+        <i className="fas fa-credit-card text-warning p-2 bg-dark rounded-circle"></i>
+        Buy Assets
+      </a>
+    </div>
+  </div>
+</div>
                 <div className="col-xl-6 col-sm-6 grid-margin mt-3">
                   <div
                     className="card shadow-lg"
