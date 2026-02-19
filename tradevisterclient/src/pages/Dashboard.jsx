@@ -14,6 +14,8 @@ const Dashboard = () => {
   const [accountLevel, setAccountLevel] = useState("");
   const [isNotification, setNotification] = useState("");
   const [isBalanceVisible, setIsBalanceVisible] = useState(true);
+  const [showKYCAlert, setShowKYCAlert] = useState(false);
+  const [userVerification, setVerificationStatus] = useState({});
 
   const newU = localStorage.getItem("user");
   if (!newU) {
@@ -23,6 +25,23 @@ const Dashboard = () => {
     const newUser = JSON.parse(newU);
     const email = newUser.email;
     const ID = newUser._id;
+
+    const getUserVerification = async () => {
+      try {
+        const response = await axios.post("/getUserVerification", { email });
+        if (response.data.status === "success") {
+          setVerificationStatus(response.data.data);
+          if (response.data.data.kycStatus !== "verified") {
+            setShowKYCAlert(true);
+          }
+        } else {
+          setShowKYCAlert(true);
+        }
+      } catch (error) {
+        console.error(error);
+        setShowKYCAlert(true);
+      }
+    };
 
     const getAccountLevel = async () => {
       await axios.post("/getAccountLevel", { ID }).then((data) => {
@@ -53,6 +72,7 @@ const Dashboard = () => {
     getUser();
     getAccountLevel();
     getNotification();
+    getUserVerification();
   }, []);
   const toggleBalanceVisibility = () => {
     setIsBalanceVisible((prev) => !prev);
@@ -104,124 +124,193 @@ const Dashboard = () => {
               <Widget102 />
               <Widget101 />
               <div className="row">
-<div className="col-xl-6 p-2 col-sm-6">
-  <div
-    className="card shadow-lg"
-    style={{
-      border: "none",
-      borderRadius: "16px",
-      background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
-      color: "white",
-      padding: "1rem",
-    }}
-  >
-    {/* Balance Display */}
-    <div className="d-flex justify-content-between align-items-center mb-3">
-      <div>
-        <h6 className="text-muted mb-1" style={{ fontWeight: 400 }}>
-          Current Balance
-        </h6>
-        <div className="d-flex align-items-center">
-          <h3 className="mb-0" style={{ fontWeight: 700 }}>
-            {isBalanceVisible ? (
-              <>
-                <span className="text-warning me-1">{user?.currency}</span>
-                {balance.toLocaleString()}
-              </>
-            ) : (
-              "******"
-            )}
-          </h3>
-          <button
-            onClick={toggleBalanceVisibility}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              marginLeft: "12px",
-            }}
-            aria-label={isBalanceVisible ? "Hide Balance" : "Show Balance"}
-          >
-            <FontAwesomeIcon
-              icon={isBalanceVisible ? faEyeSlash : faEye}
-              className="text-warning"
-              size="lg"
-            />
-          </button>
-        </div>
-      </div>
+                {showKYCAlert && (
+                  <div className="col-12 mb-3">
+                    <div
+                      className="card shadow-lg"
+                      style={{
+                        border: "none",
+                        borderRadius: "16px",
+                        background:
+                          "linear-gradient(135deg, #ff4d4f 0%, #b71c1c 100%)",
+                        color: "white",
+                        padding: "1.5rem",
+                      }}
+                    >
+                      <div className="d-flex flex-column flex-md-row align-items-center justify-content-between">
+                        {/* Icon + Message */}
+                        <div className="d-flex align-items-center mb-3 mb-md-0">
+                          <div
+                            className="d-flex justify-content-center align-items-center me-3"
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              borderRadius: "50%",
+                              background: "rgba(255,255,255,0.2)",
+                              fontSize: "1.5rem",
+                            }}
+                          >
+                            <i className="fas fa-exclamation-triangle"></i>
+                          </div>
+                          <div>
+                            <h6
+                              className="mb-1 fw-bold"
+                              style={{ letterSpacing: "0.5px" }}
+                            >
+                              Verification Required
+                            </h6>
+                            <p className="mb-0" style={{ opacity: 0.85 }}>
+                              Your account is not yet verified. Complete KYC to
+                              unlock all features and secure your account.
+                            </p>
+                          </div>
+                        </div>
 
-      {/* Trend Icon */}
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{
-          width: "50px",
-          height: "50px",
-          borderRadius: "12px",
-          background: "rgba(255, 193, 7, 0.15)",
-        }}
-      >
-        <i className="fas fa-arrow-up text-warning"></i>
-      </div>
-    </div>
+                        {/* Button */}
+                        <a
+                          href="/kyc"
+                          className="btn d-flex align-items-center justify-content-center mt-3 mt-md-0"
+                          style={{
+                            background: "white",
+                            color: "#b71c1c",
+                            borderRadius: "12px",
+                            fontWeight: 600,
+                            padding: "0.6rem 1.2rem",
+                            gap: "0.5rem",
+                            boxShadow: "0px 4px 12px rgba(0,0,0,0.2)",
+                          }}
+                        >
+                          <i className="fas fa-id-card"></i>
+                          Start Verification
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div className="col-xl-6 p-2 col-sm-6">
+                  <div
+                    className="card shadow-lg"
+                    style={{
+                      border: "none",
+                      borderRadius: "16px",
+                      background:
+                        "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+                      color: "white",
+                      padding: "1rem",
+                    }}
+                  >
+                    {/* Balance Display */}
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                      <div>
+                        <h6
+                          className="text-muted mb-1"
+                          style={{ fontWeight: 400 }}
+                        >
+                          Current Balance
+                        </h6>
+                        <div className="d-flex align-items-center">
+                          <h3 className="mb-0" style={{ fontWeight: 700 }}>
+                            {isBalanceVisible ? (
+                              <>
+                                <span className="text-warning me-1">
+                                  {user?.currency}
+                                </span>
+                                {balance.toLocaleString()}
+                              </>
+                            ) : (
+                              "******"
+                            )}
+                          </h3>
+                          <button
+                            onClick={toggleBalanceVisibility}
+                            style={{
+                              background: "none",
+                              border: "none",
+                              cursor: "pointer",
+                              marginLeft: "12px",
+                            }}
+                            aria-label={
+                              isBalanceVisible ? "Hide Balance" : "Show Balance"
+                            }
+                          >
+                            <FontAwesomeIcon
+                              icon={isBalanceVisible ? faEyeSlash : faEye}
+                              className="text-warning"
+                              size="lg"
+                            />
+                          </button>
+                        </div>
+                      </div>
 
-    {/* Action Buttons */}
-    <div
-      className="d-flex flex-wrap justify-content-between mt-4 gap-2"
-    >
-      <a
-        href="/deposite"
-        className="btn flex-fill d-flex align-items-center justify-content-center"
-        style={{
-          background: "#0f172a",
-          borderRadius: "12px",
-          color: "white",
-          fontWeight: 600,
-          gap: "8px",
-          padding: "0.5rem 0",
-          fontSize: "0.85rem",
-        }}
-      >
-        <i className="fas fa-wallet text-warning p-2 bg-dark rounded-circle"></i>
-        Deposit
-      </a>
+                      {/* Trend Icon */}
+                      <div
+                        className="d-flex justify-content-center align-items-center"
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "12px",
+                          background: "rgba(255, 193, 7, 0.15)",
+                        }}
+                      >
+                        <i className="fas fa-arrow-up text-warning"></i>
+                      </div>
+                    </div>
 
-      <a
-        href="/withdraw"
-        className="btn flex-fill d-flex align-items-center justify-content-center"
-        style={{
-          background: "#0f172a",
-          borderRadius: "12px",
-          color: "white",
-          fontWeight: 600,
-          gap: "8px",
-          padding: "0.5rem 0",
-          fontSize: "0.85rem",
-        }}
-      >
-        <i className="fas fa-paper-plane text-warning p-2 bg-dark rounded-circle"></i>
-        Withdraw
-      </a>
+                    {/* Action Buttons */}
+                    <div className="d-flex flex-wrap justify-content-between mt-4 gap-2">
+                      <a
+                        href="/deposite"
+                        className="btn flex-fill d-flex align-items-center justify-content-center"
+                        style={{
+                          background: "#0f172a",
+                          borderRadius: "12px",
+                          color: "white",
+                          fontWeight: 600,
+                          gap: "8px",
+                          padding: "0.5rem 0",
+                          fontSize: "0.85rem",
+                        }}
+                      >
+                        <i className="fas fa-wallet text-warning p-2 bg-dark rounded-circle"></i>
+                        Deposit
+                      </a>
 
-      <a
-        href="/buy"
-        className="btn flex-fill d-flex align-items-center justify-content-center"
-        style={{
-          background: "#0f172a",
-          borderRadius: "12px",
-          color: "white",
-          fontWeight: 600,
-          gap: "8px",
-          padding: "0.5rem 0",
-          fontSize: "0.85rem",
-        }}
-      >
-        <i className="fas fa-credit-card text-warning p-2 bg-dark rounded-circle"></i>
-        Buy Assets
-      </a>
-    </div>
-  </div>
-</div>
+                      <a
+                        href="/withdraw"
+                        className="btn flex-fill d-flex align-items-center justify-content-center"
+                        style={{
+                          background: "#0f172a",
+                          borderRadius: "12px",
+                          color: "white",
+                          fontWeight: 600,
+                          gap: "8px",
+                          padding: "0.5rem 0",
+                          fontSize: "0.85rem",
+                        }}
+                      >
+                        <i className="fas fa-paper-plane text-warning p-2 bg-dark rounded-circle"></i>
+                        Withdraw
+                      </a>
+
+                      <a
+                        href="/buy"
+                        className="btn flex-fill d-flex align-items-center justify-content-center"
+                        style={{
+                          background: "#0f172a",
+                          borderRadius: "12px",
+                          color: "white",
+                          fontWeight: 600,
+                          gap: "8px",
+                          padding: "0.5rem 0",
+                          fontSize: "0.85rem",
+                        }}
+                      >
+                        <i className="fas fa-credit-card text-warning p-2 bg-dark rounded-circle"></i>
+                        Buy Assets
+                      </a>
+                    </div>
+                  </div>
+                </div>
                 <div className="col-xl-6 col-sm-6 grid-margin mt-3">
                   <div
                     className="card shadow-lg"
@@ -668,6 +757,46 @@ const Dashboard = () => {
                       >
                         <i className="fas fa-paper-plane text-white"></i>
                       </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{marginBottom: "20px"}} className="col-md-12 grid-margin mt-3">
+                  <div
+                    className="p-4"
+                    style={{
+                      borderRadius: "14px",
+                      background:
+                        "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
+                      color: "#ffffff",
+                      boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                    }}
+                  >
+                    {/* Header */}
+                    <div className="d-flex align-items-center justify-content-between mb-3">
+                      <h4 className="mb-0 fw-bold d-flex align-items-center gap-2">
+                        <i className="fas fa-bell text-warning"></i>
+                        Notification
+                      </h4>
+                      <i className="fas fa-envelope-open-text text-info"></i>
+                    </div>
+
+                    {/* Message Box */}
+                    <div
+                      className="p-3"
+                      style={{
+                        background: "rgba(255,255,255,0.05)",
+                        borderRadius: "12px",
+                        border: "1px solid rgba(255,255,255,0.12)",
+                        minHeight: "60px",
+                        display: "flex",
+                        alignItems: "center",
+                        fontSize: "14px",
+                        opacity: 0.9,
+                      }}
+                    >
+                      {isNotification || "No new notifications"}
                     </div>
                   </div>
                 </div>

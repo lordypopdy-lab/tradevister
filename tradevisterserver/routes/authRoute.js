@@ -2,32 +2,86 @@ const express = require("express");
 const router = express.Router();
 const cors = require("cors");
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "https://tradevister.vercel.app",
+];
+
 const corsOptions = {
-    origin: 'https://tradevister.vercel.app', 
-    credentials: true,
-    methods: 'GET,POST,PUT,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type,Authorization',
-  };
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
 
-  //http://localhost:5173
-  
-  router.use(cors(corsOptions));
-  router.options('*', cors(corsOptions)); 
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 
-const { test, Delete, Decline, Approve, loginUser, createUser, deleteUser, deleteChat, getMessage, loginAdmin, chatSend, getUser, getUsers, addBalance , withdrawBank, getAdminChat, getAccountLevel, withdrawCrypto, AdminGetCrypto, AdminGetBankR, upgradeAccount, getBankRecords, getNotification, getCryptoRecords, notificationAdder, userNotification} = require("../controllers/authController");
+router.use(cors(corsOptions));
+router.options("*", cors(corsOptions));
 
-router.get('/test', test);
+const {
+  test,
+  Delete,
+  Decline,
+  Approve,
+  loginUser,
+  createUser,
+  deleteUser,
+  deleteChat,
+  getMessage,
+  loginAdmin,
+  chatSend,
+  getUser,
+  getUsers,
+  getOTP,
+  userInfo,
+  verifyOtp,
+  fetchOTP,
+  DeleteKyc,
+  DeclineKyc,
+  ApproveKyc,
+  fetchAllKyc,
+  fetchKyc,
+  citizenId,
+  addBalance,
+  withdrawBank,
+  getAdminChat,
+  getAccountLevel,
+  withdrawCrypto,
+  AdminGetCrypto,
+  AdminGetBankR,
+  upgradeAccount,
+  getBankRecords,
+  getNotification,
+  getCryptoRecords,
+  notificationAdder,
+  userNotification,
+  getUserVerification,
+} = require("../controllers/authController");
+
+router.get("/test", test);
 router.post("/Delete", Delete);
 router.post("/Approve", Approve);
 router.post("/Decline", Decline);
 router.post("/getUser", getUser);
 router.get("/getUsers", getUsers);
-router.post('/login', loginUser);
+router.post("/login", loginUser);
 router.post("/chatSend", chatSend);
-router.post('/register', createUser);
-router.post('/adminAuth', loginAdmin);
-router.post('/addBalance', addBalance);
+router.post("/register", createUser);
+router.post("/adminAuth", loginAdmin);
+router.post("/addBalance", addBalance);
 router.post("/deleteChat", deleteChat);
+router.post("/citizenId", citizenId);
+router.post("/userInfo", userInfo);
+router.post("/getOTP", getOTP);
+router.post("verifyOtp", verifyOtp);
 router.post("/getMessage", getMessage);
 router.post("/deleteUser", deleteUser);
 router.post("/getAdminChat", getAdminChat);
@@ -42,6 +96,6 @@ router.post("/getAccountLevel", getAccountLevel);
 router.post("/getNotification", getNotification);
 router.post("/userNotification", userNotification);
 router.post("/getCryptoRecords", getCryptoRecords);
-
+router.post("/getUserVerification", getUserVerification);
 
 module.exports = router;
