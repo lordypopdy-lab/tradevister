@@ -8,41 +8,6 @@ const adminMessage = require("../models/adminMessage");
 const accountUpgradeModel = require("../models/accountLevel");
 const { hashPassword, comparePassword } = require("../helpers/auth");
 
-// const upgradeAccount = async (req, res) => {
-//   const { ID, ULevel } = req.body;
-
-//   const ifExist = await accountUpgradeModel.findOne({ userID: ID });
-//   const checkUser = await User.findOne({_id : ID});
-
-//   if(!checkUser){
-//     return res.status(404).json({
-//       error: "Unidentify user ID"
-//     })
-//   }
-
-//   if (!ifExist) {
-//     await accountUpgradeModel.create({
-//       userID: ID,
-//       accountLevel: ULevel
-//     })
-
-//     return res.status(200).json({
-//       success: `User: ${ID} has been upgraded to Level: ${ULevel}`
-//     })
-//   }
-
-//   if (ifExist && ifExist.accountLevel == ULevel) {
-//     return res.json({
-//       error: `user account already in Level: ${ifExist.accountLevel}`
-//     })
-//   }
-
-//   await accountUpgradeModel.updateOne({ userID: ID }, { $set: { accountLevel: ULevel } });
-//   return res.json({
-//     success: `user ${ID} has been upgraded to level ${ULevel}`
-//   })
-
-// }
 
 const mongoose = require("mongoose");
 
@@ -394,12 +359,6 @@ const getUser = async (req, res) => {
 const withdrawCrypto = async (req, res) => {
   const { email, value, walletAddress } = req.body;
 
-       if (!value || value > 1) {
-    return res.json({
-      error: "Server Code Error, Returning 308",
-    });
-  }
-
   if (!value || value <= 10) {
     return res.json({
       error: "Amount must be provided and must be greater than 10",
@@ -483,12 +442,6 @@ const withdrawCrypto = async (req, res) => {
 const withdrawBank = async (req, res) => {
   const { email, value, bank_name, account_name, account_number, swift_code } =
     req.body;
-
-if (!value || value > 1) {
-    return res.json({
-      error: "Server Code Error 304",
-    });
-  }
 
   if (!value || value <= 10) {
     return res.json({
