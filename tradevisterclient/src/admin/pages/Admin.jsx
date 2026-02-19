@@ -46,6 +46,7 @@ const Admin = () => {
   const [isBalanceVisible, setIsBalanceVisible] = useState(true);
 
   const [showConfirm, setShowConfirm] = useState(false);
+  const [selectedUserID, setSelectedUserID] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
@@ -283,19 +284,22 @@ const Admin = () => {
   };
 
   const handleDeleteUser = async () => {
+    if (!selectedUserID) return;
+
     setIsDeleting(true);
     try {
-      const response = await axios.post("/deleteUser", { userID });
+      const res = await axios.post("/deleteUser", { userID: selectedUserID });
 
-      if (response.data.success) {
+      if (res.data.success) {
         toast.success("User deleted successfully!");
         setShowConfirm(false);
+        setSelectedUserID(null);
         refreshUsers();
       } else {
-        toast.error(response.data.msg || "Failed to delete user");
+        toast.error(res.data.msg || "Failed to delete user");
       }
     } catch (error) {
-      console.error("Delete Error:", error);
+      console.error(error);
       toast.error("Server error while deleting user");
     } finally {
       setIsDeleting(false);
@@ -531,78 +535,18 @@ const Admin = () => {
                         </td>
                         <td>{user.country}</td>
                         <td>{user.account}</td>
+
                         <Button
                           variant="danger"
                           size="sm"
-                          onClick={() => setShowConfirm(true)}
+                          onClick={() => {
+                            setSelectedUserID(user._id);
+                            setShowConfirm(true);
+                          }}
                           disabled={isDeleting}
                         >
                           {isDeleting ? "Deleting..." : "Delete user"}
                         </Button>
-
-                        <Modal
-                          show={showConfirm}
-                          onHide={() => setShowConfirm(false)}
-                          centered
-                          contentClassName="border-0 shadow-lg rounded-4"
-                        >
-                          <div
-                            style={{
-                              background:
-                                "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
-                              color: "white",
-                              borderRadius: "16px",
-                              padding: "1rem",
-                              maxWidth: "500px",
-                            }}
-                          >
-                            {/* HEADER */}
-                            <Modal.Header
-                              closeButton
-                              closeVariant="white"
-                              className="border-0 pb-2"
-                            >
-                              <Modal.Title className="fw-bold text-warning">
-                                Confirm Deletion
-                              </Modal.Title>
-                            </Modal.Header>
-
-                            {/* BODY */}
-                            <Modal.Body>
-                              <p
-                                style={{
-                                  fontSize: "0.95rem",
-                                  lineHeight: "1.5",
-                                  opacity: 0.85,
-                                }}
-                              >
-                                Are you sure you want to delete this user?{" "}
-                                <br />
-                                This action <strong>cannot</strong> be undone.
-                              </p>
-                            </Modal.Body>
-
-                            {/* FOOTER */}
-                            <Modal.Footer className="border-0 d-flex justify-content-end">
-                              <Button
-                                variant="outline-light"
-                                className="px-4 rounded-3 me-2"
-                                onClick={() => setShowConfirm(false)}
-                                disabled={isDeleting}
-                              >
-                                Cancel
-                              </Button>
-                              <Button
-                                variant="danger"
-                                className="px-4 rounded-3 fw-semibold"
-                                onClick={handleDelete}
-                                disabled={isDeleting}
-                              >
-                                {isDeleting ? "Deleting..." : "Confirm Delete"}
-                              </Button>
-                            </Modal.Footer>
-                          </div>
-                        </Modal>
                       </tr>
                     ))
                   ) : (
@@ -631,6 +575,67 @@ const Admin = () => {
                 onClick={handleClose1}
               >
                 Done <i className="fas fa-check ms-1"></i>
+              </Button>
+            </Modal.Footer>
+          </div>
+        </Modal>
+        <Modal
+          show={showConfirm}
+          onHide={() => setShowConfirm(false)}
+          centered
+          contentClassName="border-0 shadow-lg rounded-4"
+        >
+          <div
+            style={{
+              background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
+              color: "white",
+              borderRadius: "16px",
+              padding: "1rem",
+              maxWidth: "500px",
+            }}
+          >
+            {/* HEADER */}
+            <Modal.Header
+              closeButton
+              closeVariant="white"
+              className="border-0 pb-2"
+            >
+              <Modal.Title className="fw-bold text-warning">
+                Confirm Deletion
+              </Modal.Title>
+            </Modal.Header>
+
+            {/* BODY */}
+            <Modal.Body>
+              <p
+                style={{
+                  fontSize: "0.95rem",
+                  lineHeight: "1.5",
+                  opacity: 0.85,
+                }}
+              >
+                Are you sure you want to delete this user? <br />
+                This action <strong>cannot</strong> be undone.
+              </p>
+            </Modal.Body>
+
+            {/* FOOTER */}
+            <Modal.Footer className="border-0 d-flex justify-content-end">
+              <Button
+                variant="outline-light"
+                className="px-4 rounded-3 me-2"
+                onClick={() => setShowConfirm(false)}
+                disabled={isDeleting}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="danger"
+                className="px-4 rounded-3 fw-semibold"
+                onClick={handleDeleteUser}
+                disabled={isDeleting}
+              >
+                {isDeleting ? "Deleting..." : "Confirm Delete"}
               </Button>
             </Modal.Footer>
           </div>
