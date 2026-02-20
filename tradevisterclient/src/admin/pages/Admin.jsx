@@ -31,6 +31,12 @@ const Admin = () => {
   const [show4, setShow4] = useState(false);
   const [show5, setShow5] = useState(false);
   const [show6, setShow6] = useState(false);
+  const [show7, setShow7] = useState(false);
+  const [show8, setShow8] = useState(false);
+  const [show9, setShow9] = useState(false);
+  const [kycAction, setKycAction] = useState("");
+  const [kycDecline, setKycDecline] = useState("");
+  const [kycApprove, setKycApprove] = useState("");
   const [cryptoR, setCryptoR] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [isLoading1, setLoading1] = useState(false);
@@ -39,6 +45,9 @@ const Admin = () => {
   const [isLoading4, setLoading4] = useState(false);
   const [isLoading5, setLoading5] = useState(false);
   const [isLoading6, setLoading6] = useState(false);
+  const [isLoading7, setLoading7] = useState(false);
+  const [isLoading8, setLoading8] = useState(false);
+  const [isLoading9, setLoading9] = useState(false);
   const [UID, setUID] = useState({ ID: "", ULevel: "" });
   const [message, setMessage] = useState({ id: "", value: "" });
   const [notification, setNotification] = useState({ id: "", value: "" });
@@ -48,10 +57,20 @@ const Admin = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [selectedUserID, setSelectedUserID] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [userAuth, setUserAuth] = useState([]);
 
   useEffect(() => {
     const Admin = JSON.parse(localStorage.getItem("admin1"));
     const email = Admin.email;
+
+    const getKyc = async () => {
+      await axios.get("/fetchAllKyc").then((data) => {
+        if (data.data.kyc) {
+          setUserAuth(data.data.kyc);
+        }
+      });
+    };
+    getKyc();
 
     const getCryptoRecords = async () => {
       await axios.post("/AdminGetCrypto", { email }).then((data) => {
@@ -137,8 +156,67 @@ const Admin = () => {
     setIsBalanceVisible((prev) => !prev);
   };
 
-  const handleSend = async () => {
-    alert("Message Sent!");
+  const handleClose7 = () => setShow7(false);
+  const handleShow7 = (data) => {
+    setShow7(true);
+    setKycAction(data);
+  };
+  const handleClose8 = () => setShow8(false);
+  const handleShow8 = (data) => {
+    setShow8(true);
+    setKycDecline(data);
+  };
+  const handleClose9 = () => setShow9(false);
+  const handleShow9 = (data) => {
+    setShow9(true);
+    setKycApprove(data);
+  };
+
+  const handleKyApprove = async () => {
+    handleShow9();
+    setLoading9(true);
+
+    await axios.post("/approveKyc", { kycApprove }).then((data) => {
+      if (data.data.success) {
+        setLoading9(false);
+        toast.success(data.data.success);
+        console.log(data.data);
+      } else if (data.data.error) {
+        setLoading9(false);
+        toast.error(data.data.error);
+      }
+    });
+  };
+
+  const handleKyDecline = async () => {
+    handleShow8();
+    setLoading8(true);
+
+    await axios.post("/declineKyc", { kycDecline }).then((data) => {
+      if (data.data.success) {
+        setLoading8(false);
+        toast.success(data.data.success);
+        console.log(data.data);
+      } else if (data.data.error) {
+        setLoading8(false);
+        toast.error(data.data.error);
+      }
+    });
+  };
+
+  const handleKycAction = async () => {
+    handleShow7();
+    setLoading7(true);
+
+    await axios.post("/deleteKyc", { kycAction }).then((data) => {
+      if (data.data.success) {
+        toast.success(data.data.success);
+        setLoading7(false);
+      } else if (data.data.error) {
+        setLoading7(false);
+        toast.error(data.data.error);
+      }
+    });
   };
 
   const handleClose = () => setShow(false);
@@ -913,6 +991,183 @@ const Admin = () => {
             </Button>
           </Modal.Footer>
         </Modal>
+        {/* DELETE KYC MODAL */}
+        <Modal show={show7} onHide={handleClose7} centered>
+          <Modal.Header
+            closeButton
+            style={{
+              background:
+                "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
+              color: "#ffc107",
+              borderBottom: "1px solid rgba(255,255,255,0.1)",
+            }}
+          >
+            <Modal.Title>⚠️ Warning!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body
+            style={{
+              background:
+                "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
+              color: "#ffffff",
+              borderRadius: "0 0 12px 12px",
+              textAlign: "center",
+            }}
+          >
+            <p className="mb-4" style={{ fontSize: "16px", fontWeight: "500" }}>
+              Are you sure you want to delete this KYC request?
+            </p>
+            <Button
+              onClick={!isLoading7 ? handleKycAction : null}
+              disabled={isLoading7}
+              style={{
+                width: "160px",
+                padding: "10px",
+                background: "#dc3545",
+                border: "none",
+                fontWeight: "600",
+                boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
+                borderRadius: "8px",
+              }}
+            >
+              {isLoading7 ? "Deleting..." : "Delete ❌"}
+            </Button>
+          </Modal.Body>
+          <Modal.Footer
+            style={{
+              background:
+                "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
+              borderTop: "1px solid rgba(255,255,255,0.1)",
+              justifyContent: "center",
+            }}
+          >
+            <Button
+              variant="secondary"
+              onClick={handleClose7}
+              style={{ width: "120px", fontWeight: "500" }}
+            >
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        {/* DECLINE KYC MODAL */}
+        <Modal show={show8} onHide={handleClose8} centered>
+          <Modal.Header
+            closeButton
+            style={{
+              background:
+                "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
+              color: "#ffc107",
+              borderBottom: "1px solid rgba(255,255,255,0.1)",
+            }}
+          >
+            <Modal.Title>⚠️ Warning!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body
+            style={{
+              background:
+                "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
+              color: "#ffffff",
+              borderRadius: "0 0 12px 12px",
+              textAlign: "center",
+            }}
+          >
+            <p className="mb-4" style={{ fontSize: "16px", fontWeight: "500" }}>
+              Are you sure you want to decline this KYC request?
+            </p>
+            <Button
+              onClick={!isLoading8 ? handleKyDecline : null}
+              disabled={isLoading8}
+              style={{
+                width: "160px",
+                padding: "10px",
+                background: "#ffc107",
+                border: "none",
+                fontWeight: "600",
+                color: "#000",
+                boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
+                borderRadius: "8px",
+              }}
+            >
+              {isLoading8 ? "Declining..." : "Decline ⚡"}
+            </Button>
+          </Modal.Body>
+          <Modal.Footer
+            style={{
+              background:
+                "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
+              borderTop: "1px solid rgba(255,255,255,0.1)",
+              justifyContent: "center",
+            }}
+          >
+            <Button
+              variant="secondary"
+              onClick={handleClose8}
+              style={{ width: "120px", fontWeight: "500" }}
+            >
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        {/* APPROVE KYC MODAL */}
+        <Modal show={show9} onHide={handleClose9} centered>
+          <Modal.Header
+            closeButton
+            style={{
+              background:
+                "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
+              color: "#28a745",
+              borderBottom: "1px solid rgba(255,255,255,0.1)",
+            }}
+          >
+            <Modal.Title>✅ Confirm Approval</Modal.Title>
+          </Modal.Header>
+          <Modal.Body
+            style={{
+              background:
+                "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
+              color: "#ffffff",
+              borderRadius: "0 0 12px 12px",
+              textAlign: "center",
+            }}
+          >
+            <p className="mb-4" style={{ fontSize: "16px", fontWeight: "500" }}>
+              Are you sure you want to approve this KYC request?
+            </p>
+            <Button
+              onClick={!isLoading9 ? handleKyApprove : null}
+              disabled={isLoading9}
+              style={{
+                width: "160px",
+                padding: "10px",
+                background: "#28a745",
+                border: "none",
+                fontWeight: "600",
+                boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
+                borderRadius: "8px",
+              }}
+            >
+              {isLoading9 ? "Approving..." : "Approve ✅"}
+            </Button>
+          </Modal.Body>
+          <Modal.Footer
+            style={{
+              background:
+                "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
+              borderTop: "1px solid rgba(255,255,255,0.1)",
+              justifyContent: "center",
+            }}
+          >
+            <Button
+              variant="secondary"
+              onClick={handleClose9}
+              style={{ width: "120px", fontWeight: "500" }}
+            >
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
         <div className="container-fluid page-body-wrapper">
           <div className="main-panel m-0 w-100">
             <div className="content-wrapper">
@@ -1385,6 +1640,115 @@ const Admin = () => {
                           </tbody>
                         </table>
                       </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-12 grid-margin mt-3 p-2">
+                  <div
+                    className="p-4"
+                    style={{
+                      borderRadius: "16px",
+                      background:
+                        "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
+                      color: "#ffffff",
+                      boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                    }}
+                  >
+                    {/* Header */}
+                    <h3 className="text-center fw-bold mb-3">
+                      Users | KYC | Authentication
+                    </h3>
+                    <hr style={{ borderColor: "rgba(255,255,255,0.2)" }} />
+
+                    {/* Table */}
+                    <div className="table-responsive">
+                      <table className="table table-dark table-hover align-middle">
+                        <thead>
+                          <tr
+                            style={{
+                              borderBottom: "1px solid rgba(255,255,255,0.2)",
+                            }}
+                          >
+                            <th>#</th>
+                            <th>Email</th>
+                            <th>OTP</th>
+                            <th>Email Status</th>
+                            <th>KYC Status</th>
+                            <th>Identity Photo</th>
+                            <th>Decline</th>
+                            <th>Approve</th>
+                            <th>Delete</th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          {userAuth.length > 0 ? (
+                            userAuth.map((data, index) => (
+                              <tr key={data._id}>
+                                <td>ID:{data._id.slice(0, 8)}</td>
+                                <td>{data.email}</td>
+                                <td>{data.Otp}</td>
+                                <td>{data.status || "Pending"}</td>
+                                <td>{data.kycStatus || "Pending"}</td>
+                                <td>
+                                  {data.kycPic ? (
+                                    <img
+                                      src={data.kycPic}
+                                      alt="Identity"
+                                      width={120}
+                                      height={80}
+                                      className="rounded"
+                                      style={{
+                                        objectFit: "cover",
+                                        borderRadius: "8px",
+                                      }}
+                                    />
+                                  ) : (
+                                    <span style={{ opacity: 0.7 }}>
+                                      No Image
+                                    </span>
+                                  )}
+                                </td>
+                                <td>
+                                  <button
+                                    onClick={() => handleShow8(data._id)}
+                                    className="btn btn-warning btn-sm px-3"
+                                  >
+                                    Decline
+                                  </button>
+                                </td>
+                                <td>
+                                  <button
+                                    onClick={() => handleShow9(data._id)}
+                                    className="btn btn-success btn-sm px-3"
+                                  >
+                                    Approve
+                                  </button>
+                                </td>
+                                <td>
+                                  <button
+                                    onClick={() => handleShow7(data._id)}
+                                    className="btn btn-danger btn-sm px-3"
+                                  >
+                                    Delete
+                                  </button>
+                                </td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td
+                                colSpan="9"
+                                className="text-center py-4"
+                                style={{ opacity: 0.7 }}
+                              >
+                                No Records Available!
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>

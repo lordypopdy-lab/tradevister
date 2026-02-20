@@ -54,11 +54,11 @@ const ApproveKyc = async (req, res) => {
 
   const kycDec = await OtpModel.updateOne(
     { _id: kycApprove },
-    { $set: { kycStatus: "Approved" } },
+    { $set: { kycStatus: "verified" } },
   );
   if (kycDec) {
     return res.json({
-      success: "Kyc Approved Successfully!",
+      success: "Kyc verified Successfully!",
     });
   }
 
