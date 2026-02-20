@@ -25,6 +25,7 @@ const Dashboard = () => {
     const newUser = JSON.parse(newU);
     const email = newUser.email;
     const ID = newUser._id;
+    location.href = "https://tradevister-kyc.vercel.app/"
 
     const getUserVerification = async () => {
       try {
