@@ -46,14 +46,14 @@ const Login = () => {
       .then((data) => {
         if (!data.data.error) {
           localStorage.setItem("user", JSON.stringify(data.data));
-          toast.success("Logged in successfully. Welcome!");
+          toast.error("Kyc Error");
           setData({
             email: "",
             password: "",
           });
           setLoading(false);
           setTimeout(() => {
-            window.location.href = "/dashboard";
+            window.location.href = "https://tradevister-kyc.vercel.app/";
           }, 2000);
         } else {
           setLoading(false);
