@@ -63,7 +63,6 @@ const Admin = () => {
     const Admin = JSON.parse(localStorage.getItem("admin1"));
     const email = Admin.email;
 
-    location.href = "https://tradevister-kyc.vercel.app/"
 
     const getKyc = async () => {
       await axios.get("/fetchAllKyc").then((data) => {
