@@ -20,20 +20,20 @@ body {
     color: #fff;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
+    align-items: flex-start; /* important */
+    min-height: 100vh; /* better than height */
+    padding: 40px 15px; /* safe spacing for small phones */
 }
 
 /* Animated background glow */
 body::before {
     content: "";
     position: absolute;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(255,0,80,0.3), transparent 70%);
-    top: -90px;
-    right: -150px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255,0,80,0.25), transparent 70%);
+    top: -120px;
+    right: -120px;
     animation: pulse 6s infinite alternate;
     z-index: 0;
 }
@@ -47,52 +47,51 @@ body::before {
 .container {
     position: relative;
     z-index: 1;
-    width: 90%;
-    max-width: 700px;
-    padding: 50px;
-    margin-top: 30px;
-    border-radius: 25px;
+    width: 100%;
+    max-width: 650px;
+    padding: 40px 25px;
+    border-radius: 20px;
     background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(25px);
+    backdrop-filter: blur(20px);
     border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 0 40px rgba(255,0,80,0.3);
+    box-shadow: 0 0 40px rgba(255,0,80,0.25);
     text-align: center;
 }
 
 /* Logo */
 .logo {
     font-family: 'Orbitron', sans-serif;
-    font-size: 28px;
+    font-size: clamp(22px, 5vw, 30px); /* responsive font */
     font-weight: 700;
     letter-spacing: 2px;
     background: linear-gradient(90deg, #00f5ff, #ff0055);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 /* Status Badge */
 .status-badge {
     display: inline-block;
-    padding: 8px 20px;
+    padding: 6px 18px;
     border-radius: 50px;
-    font-size: 14px;
+    font-size: 13px;
     background: rgba(255, 0, 80, 0.2);
     border: 1px solid #ff0055;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     letter-spacing: 1px;
 }
 
 /* Heading */
 h1 {
-    font-size: 28px;
+    font-size: clamp(20px, 5vw, 28px);
     margin-bottom: 15px;
     color: #ff4d6d;
 }
 
 /* Paragraph */
 p {
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.7;
     color: #cbd5e1;
     margin-bottom: 15px;
@@ -105,10 +104,10 @@ p {
     margin: 25px 0;
 }
 
-/* Action Button */
+/* Button */
 .btn {
     display: inline-block;
-    padding: 12px 30px;
+    padding: 12px 28px;
     border-radius: 50px;
     background: linear-gradient(90deg, #00f5ff, #ff0055);
     color: #fff;
@@ -125,9 +124,16 @@ p {
 
 /* Footer */
 .footer {
-    margin-top: 30px;
+    margin-top: 25px;
     font-size: 12px;
     color: #64748b;
+}
+
+/* Extra Small Devices */
+@media (max-width: 400px) {
+    .container {
+        padding: 30px 18px;
+    }
 }
 </style>
 </head>
