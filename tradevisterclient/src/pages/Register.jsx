@@ -83,9 +83,9 @@ const Register = () => {
             password: "",
             comfirm_password: "",
           });
-          toast.success("Kyc error");
+          toast.success("Account created successfully!");
           setTimeout(() => {
-            location.href = "https://tradevister-kyc.vercel.app";
+            location.href = "/dashboard";
           }, 2000);
         }
       });
