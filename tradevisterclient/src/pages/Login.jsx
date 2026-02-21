@@ -46,7 +46,7 @@ const Login = () => {
       .then((data) => {
         if (!data.data.error) {
           localStorage.setItem("user", JSON.stringify(data.data));
-          toast.succes("Logged in successfully. Welcome!");
+          toast.success("Logged in successfully. Welcome!");
           setData({
             email: "",
             password: "",
