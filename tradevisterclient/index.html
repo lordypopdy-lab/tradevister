@@ -2,75 +2,20 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link
-      rel="shortcut icon"
-      type="image/x-icon"
-      href="assets/assets/img/favicons/favicon.png"
-    />
+    <link rel="shortcut icon" type="image/x-icon" href="assets/assets/img/favicons/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>tradeVister | investment</title>
 
-    <link rel="stylesheet" href="/css/new.css" />
-
+     <link rel="stylesheet" href="/css/new.css">
     <link
       rel="stylesheet"
       crossorigin="anonymous"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
       integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
     />
-
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-      rel="stylesheet"
-    />
-
-    <!-- SERVER ALERT STYLE -->
-    <style>
-      #serverAlert {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: linear-gradient(135deg, #0b1f3a, #163b70);
-        color: #fff;
-        padding: 14px 20px;
-        border-radius: 12px;
-        font-size: 14px;
-        font-weight: 500;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-        z-index: 999999;
-        display: none;
-        min-width: 320px;
-        max-width: 420px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(8px);
-        animation: slideIn 0.4s ease;
-      }
-
-      @keyframes slideIn {
-        from {
-          opacity: 0;
-          transform: translateY(-20px) translateX(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0) translateX(0);
-        }
-      }
-    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   </head>
-
   <body>
-    <!-- SERVER ALERT -->
-    <div id="serverAlert">
-      <i
-        class="fas fa-server"
-        style="margin-right: 10px; color: #4da3ff;"
-      ></i>
-
-      System Notice: Server storage capacity is nearing its operational limit.
-      Some services may experience temporary delays.
-    </div>
-
     <div id="root"></div>
 
     <script src="./src/assets/assets/js/dashboard.js"></script>
@@ -87,28 +32,8 @@
       type="text/javascript"
       src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
     ></script>
-
     <script src="js/translate.js"></script>
 
     <script src="js/main.js"></script>
-
-    <!-- SERVER ALERT SCRIPT -->
-    <script>
-      const serverAlert = document.getElementById("serverAlert");
-
-      function showServerAlert() {
-        serverAlert.style.display = "block";
-
-        setTimeout(() => {
-          serverAlert.style.display = "none";
-        }, 2500);
-      }
-
-      showServerAlert();
-
-      setInterval(() => {
-        showServerAlert();
-      }, 3000);
-    </script>
   </body>
 </html>
