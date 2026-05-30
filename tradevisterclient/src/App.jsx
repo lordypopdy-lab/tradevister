@@ -1,40 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="shortcut icon" type="image/x-icon" href="assets/assets/img/favicons/favicon.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tradeVister | investment</title>
+import Index from "./pages/Index";
+import Login from "./pages/Login";
+import Contact from "./pages/Contact";
+import Admin from "./admin/pages/Admin";
+import Register from "./pages/Register";
+import Deposite from "./pages/Deposite";
+import Withdraw from "./pages/Withdraw";
+import Settings from "./pages/Settings";
+import Dashboard from "./pages/Dashboard";
+import BuyAssets from "./pages/BuyAssets";
+import AdminLogin from "./admin/pages/AdminLogin";
+import AdminContact from "./admin/pages/AdminContact";
+import axios from 'axios';
+import { Toaster } from 'react-hot-toast';
 
-     <link rel="stylesheet" href="/css/new.css">
-    <link
-      rel="stylesheet"
-      crossorigin="anonymous"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
-      integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
-    />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-  </head>
-  <body>
-    <div id="root"></div>
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-    <script src="./src/assets/assets/js/dashboard.js"></script>
+axios.defaults.baseURL = 'https://tradevisterserver.vercel.appp';
+axios.defaults.withCredentials = true;
 
-    <script type="module" src="/src/main.jsx"></script>
+//http://localhost:8080 
 
-    <script type="module" src="/src/main.jsx"></script>
+function App() {
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  return (
+    <>
+      <Toaster position='top-right' toastOptions={{ duration: 4000 }} />
+      <Router>
+        <Routes>
+          <Route index="/" element={<Index />} />
+          <Route path="/buy" element={<BuyAssets />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/deposite" element={<Deposite />} />
+          <Route path="/withdraw" element={<Withdraw />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/contact" element={<AdminContact />} />
+        </Routes>
+      </Router>
+    </>
+  )
+}
 
-    <script src="lib/wow/wow.min.js"></script>
-
-    <script
-      type="text/javascript"
-      src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-    ></script>
-    <script src="js/translate.js"></script>
-
-    <script src="js/main.js"></script>
-  </body>
-</html>
-      
+export default App
