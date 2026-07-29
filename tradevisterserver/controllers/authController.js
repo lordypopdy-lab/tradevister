@@ -7,7 +7,6 @@ const bankModel = require("../models/bankModel");
 const cryptoModel = require("../models/cryptoModel");
 const adminMessage = require("../models/adminMessage");
 const userInfomation = require("../models/userInformation");
-
 const nodemailer = require("nodemailer");
 
 const dotenv = require("dotenv");
