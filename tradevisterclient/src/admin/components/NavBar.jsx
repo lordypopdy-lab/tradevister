@@ -31,10 +31,13 @@ const NavBar = () => {
           >
             <img
               src="img/logo_2.png"
-              width={28}
-              height={28}
               className="me-2"
               alt="logo"
+              style={{
+                width: "28px",
+                height: "28px",
+                objectFit: "cover",
+              }}
             />
             TradeVister
           </Navbar.Brand>
