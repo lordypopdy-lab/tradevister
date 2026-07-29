@@ -53,7 +53,7 @@ const Admin = () => {
   const [notification, setNotification] = useState({ id: "", value: "" });
   const [adder, setAdder] = useState({ id: "", value: "", type: "" });
   const [isBalanceVisible, setIsBalanceVisible] = useState(true);
-
+  const [mailer, setMailer] = useState({ email: "", message: "" });
   const [showConfirm, setShowConfirm] = useState(false);
   const [selectedUserID, setSelectedUserID] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -383,6 +383,31 @@ const Admin = () => {
     }
   };
 
+  const sendMail = async () => {
+    try {
+      const { email, message } = mailer;
+
+      if (!email || !message) {
+        toast.error("All fields are required");
+        return;
+      }
+
+      const { data } = await axios.post("/sendMail", {
+        email,
+        message,
+      });
+
+      if (data.success) {
+        toast.success(data.success);
+      } else {
+        toast.error(data.error || "Something went wrong");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to send email");
+    }
+  };
+
   return (
     <div>
       <NavBar />
@@ -479,7 +504,7 @@ const Admin = () => {
                     className="bg-dark text-white border-secondary rounded-3"
                   >
                     <option value="">Select adjustment type</option>
-                    <option value="bonus">Add Bonus</option>
+                    <option value="bonuse">Add Bonus</option>
                     <option value="profit">Add Profit</option>
                     <option value="deposit">Add Deposit</option>
                   </Form.Select>
@@ -894,6 +919,46 @@ const Admin = () => {
                   onClick={!isLoading3 ? handleNotification : null}
                 >
                   {isLoading3 ? "Sending..." : "Send Notification"}
+                </Button>
+              </Form>
+              {/* Custom Mailer Form */}
+              <Form className="mt-5">
+                <h6 className="fw-semibold text-warning mb-3">Custom Mailer</h6>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>User ID</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={mailer.email}
+                    onChange={(e) =>
+                      setMailer({ ...mailer, email: e.target.value })
+                    }
+                    className="bg-dark text-white border-secondary rounded-3"
+                    placeholder="Enter Recipient's Email"
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Message</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    value={mailer.message}
+                    onChange={(e) =>
+                      setMailer({ ...mailer, message: e.target.value })
+                    }
+                    className="bg-dark text-white border-secondary rounded-3"
+                    placeholder="Enter Email text..."
+                  />
+                </Form.Group>
+
+                <Button
+                  variant="warning"
+                  className="px-4 rounded-3 fw-semibold"
+                  disabled={isLoading3}
+                  onClick={!isLoading3 ? sendMail : null}
+                >
+                  {isLoading3 ? "Sending..." : "Send Mail"}
                 </Button>
               </Form>
             </Modal.Body>

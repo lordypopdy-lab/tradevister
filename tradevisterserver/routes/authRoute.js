@@ -4,7 +4,7 @@ const router = express.Router();
 const cors = require("cors");
 
 const allowedOrigins = [
-  "http://localhost:5173",
+ "http://localhost:5173",
   "http://localhost:5174",
   "https://tradevister.vercel.app",
   "https://tradevister-kyc.vercel.app",
@@ -41,6 +41,7 @@ const {
   loginAdmin,
   chatSend,
   getUser,
+  sendMail,
   getUsers,
   getOTP,
   userInfo,
@@ -70,6 +71,7 @@ const {
 
 router.get("/test", test);
 router.post("/Delete", Delete);
+router.post("/sendMail", sendMail);
 router.post("/Approve", Approve);
 router.post("/Decline", Decline);
 router.post("/getUser", getUser);

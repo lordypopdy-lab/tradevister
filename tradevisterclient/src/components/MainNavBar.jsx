@@ -87,7 +87,7 @@ const MainNavBar = () => {
               letterSpacing: "1px",
             }}
           >
-            TradeVister
+            TrustWave
           </span>
         </Navbar.Brand>
 

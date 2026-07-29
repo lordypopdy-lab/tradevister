@@ -34,12 +34,12 @@ const NavBar = () => {
               className="me-2"
               alt="logo"
               style={{
-                width: "28px",
-                height: "28px",
+                width: "30px",
+                height: "30px",
                 objectFit: "cover",
               }}
             />
-            TradeVister
+            TRADEVISTER
           </Navbar.Brand>
 
           {/* Toggle for mobile */}
