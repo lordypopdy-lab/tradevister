@@ -1,39 +1,892 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="shortcut icon" type="image/x-icon" href="assets/assets/img/favicons/favicon.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tradeVister | investment</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-     <link rel="stylesheet" href="/css/new.css">
-    <link
-      rel="stylesheet"
-      crossorigin="anonymous"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
-      integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
-    />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-  </head>
-  <body>
-    <div id="root"></div>
+  <title>Account Disabled | Verification Required</title>
 
-    <script src="./src/assets/assets/js/dashboard.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    <script type="module" src="/src/main.jsx"></script>
+    :root {
+      --bg: #f5f7fa;
+      --card: #ffffff;
+      --text: #17202a;
+      --muted: #667085;
+      --border: #e5e7eb;
+      --danger: #c62828;
+      --danger-bg: #fff4f4;
+      --blue: #155eef;
+      --blue-dark: #1048bd;
+      --success: #087443;
+      --shadow: 0 20px 55px rgba(16, 24, 40, 0.10);
+    }
 
-    <script type="module" src="/src/main.jsx"></script>
+    body {
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(21, 94, 239, 0.05), transparent 32%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    /* HEADER */
 
-    <script src="lib/wow/wow.min.js"></script>
+    header {
+      height: 72px;
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      position: relative;
+      z-index: 5;
+    }
 
-    <script
-      type="text/javascript"
-      src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-    ></script>
-    <script src="js/translate.js"></script>
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-weight: 750;
+      font-size: 19px;
+      letter-spacing: -0.3px;
+    }
 
-    <script src="js/main.js"></script>
-  </body>
-</html>
+    .brand-mark {
+      width: 35px;
+      height: 35px;
+      border-radius: 9px;
+      background: #111827;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .security-status {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      color: #475467;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: #12b76a;
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px rgba(18, 183, 106, 0.10);
+    }
+
+    /* MAIN */
+
+    main {
+      width: 100%;
+      max-width: 850px;
+      margin: auto;
+      padding: 65px 20px 70px;
+    }
+
+    .notice-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .top-line {
+      height: 4px;
+      background: linear-gradient(
+        90deg,
+        #b42318,
+        #d92d20,
+        #f04438
+      );
+    }
+
+    .content {
+      padding: 48px;
+    }
+
+    /* ICON */
+
+    .warning-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--danger-bg);
+      color: var(--danger);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 25px;
+    }
+
+    .warning-icon svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .eyebrow {
+      color: var(--danger);
+      font-size: 12px;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: 1.1px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 32px;
+      line-height: 1.2;
+      letter-spacing: -0.8px;
+      margin-bottom: 14px;
+    }
+
+    .intro {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+      max-width: 700px;
+    }
+
+    /* ALERT */
+
+    .alert {
+      margin-top: 30px;
+      padding: 18px 20px;
+      border-radius: 11px;
+      background: #fff8f7;
+      border: 1px solid #fecdca;
+      display: flex;
+      gap: 13px;
+      align-items: flex-start;
+    }
+
+    .alert svg {
+      width: 21px;
+      height: 21px;
+      color: #b42318;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .alert strong {
+      display: block;
+      color: #912018;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .alert p {
+      color: #7a271a;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* VERIFICATION */
+
+    .section-title {
+      margin-top: 36px;
+      margin-bottom: 17px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .requirements {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .requirement {
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: #fff;
+    }
+
+    .requirement-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      background: #eff4ff;
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .requirement-icon svg {
+      width: 19px;
+      height: 19px;
+    }
+
+    .requirement strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .requirement span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    /* FORM */
+
+    .verification-form {
+      margin-top: 30px;
+      padding: 25px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 650;
+      margin-bottom: 8px;
+    }
+
+    .input {
+      width: 100%;
+      height: 46px;
+      padding: 0 14px;
+      border: 1px solid #d0d5dd;
+      border-radius: 8px;
+      outline: none;
+      background: white;
+      font-size: 14px;
+      color: var(--text);
+      transition: 0.2s;
+    }
+
+    .input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(21, 94, 239, 0.10);
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    /* UPLOAD */
+
+    .upload-box {
+      border: 1.5px dashed #b8c0cc;
+      border-radius: 10px;
+      background: white;
+      padding: 22px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .upload-box:hover {
+      border-color: var(--blue);
+      background: #f9fbff;
+    }
+
+    .upload-icon {
+      width: 43px;
+      height: 43px;
+      margin: 0 auto 10px;
+      border-radius: 50%;
+      background: #eff4ff;
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .upload-icon svg {
+      width: 21px;
+      height: 21px;
+    }
+
+    .upload-box strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .upload-box span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    #fileName {
+      margin-top: 10px;
+      color: var(--success);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    /* BUTTON */
+
+    .submit-btn {
+      width: 100%;
+      height: 48px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 8px;
+      background: var(--blue);
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .submit-btn:hover {
+      background: var(--blue-dark);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .submit-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* INFO */
+
+    .info-box {
+      margin-top: 26px;
+      display: flex;
+      gap: 12px;
+      padding: 16px;
+      background: #f8fafc;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .info-box svg {
+      width: 19px;
+      height: 19px;
+      color: #667085;
+      flex-shrink: 0;
+    }
+
+    .info-box p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    /* FOOTER */
+
+    footer {
+      margin-top: auto;
+      padding: 25px 20px;
+      text-align: center;
+      color: #98a2b3;
+      font-size: 12px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      color: #667085;
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: var(--blue);
+    }
+
+    /* SUCCESS */
+
+    .success-message {
+      display: none;
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 9px;
+      background: #ecfdf3;
+      border: 1px solid #abefc6;
+      color: #067647;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 650px) {
+
+      header {
+        height: 64px;
+        padding: 0 18px;
+      }
+
+      .security-status {
+        font-size: 11px;
+      }
+
+      .brand {
+        font-size: 16px;
+      }
+
+      .brand-mark {
+        width: 31px;
+        height: 31px;
+        font-size: 14px;
+      }
+
+      main {
+        padding: 25px 13px 40px;
+      }
+
+      .content {
+        padding: 30px 20px;
+      }
+
+      h1 {
+        font-size: 25px;
+      }
+
+      .intro {
+        font-size: 14px;
+      }
+
+      .requirements {
+        grid-template-columns: 1fr;
+      }
+
+      .verification-form {
+        padding: 18px;
+      }
+
+      .alert {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+
+    <div class="brand">
+      <div class="brand-mark">B</div>
+      <span>Business Portal</span>
+    </div>
+
+    <div class="security-status">
+      <span class="status-dot"></span>
+      Secure verification
+    </div>
+
+  </header>
+
+
+  <!-- MAIN -->
+  <main>
+
+    <section class="notice-card">
+
+      <div class="top-line"></div>
+
+      <div class="content">
+
+        <!-- WARNING ICON -->
+        <div class="warning-icon">
+          <svg viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.3 3.9 2.1 18a2 2 0 0 0 1.7 3h16.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+
+        <div class="eyebrow">
+          Account access restricted
+        </div>
+
+        <h1>
+          Your account has been temporarily disabled
+        </h1>
+
+        <p class="intro">
+          Your account has been restricted following a compliance review.
+          Our records indicate that the required Corporate Affairs Commission
+          (CAC) registration information could not be verified.
+        </p>
+
+
+        <!-- ALERT -->
+        <div class="alert">
+
+          <svg viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+
+          <div>
+            <strong>CAC verification required</strong>
+
+            <p>
+              To restore access, submit valid CAC registration information
+              and supporting documentation for verification. Your account
+              will remain restricted while the review is pending.
+            </p>
+          </div>
+
+        </div>
+
+
+        <!-- REQUIREMENTS -->
+
+        <div class="section-title">
+          Documents required for verification
+        </div>
+
+        <div class="requirements">
+
+          <div class="requirement">
+
+            <div class="requirement-icon">
+              <svg viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="8" y1="13" x2="16" y2="13"/>
+                <line x1="8" y1="17" x2="14" y2="17"/>
+              </svg>
+            </div>
+
+            <div>
+              <strong>CAC Certificate</strong>
+              <span>
+                Valid CAC registration certificate or official registration document.
+              </span>
+            </div>
+
+          </div>
+
+
+          <div class="requirement">
+
+            <div class="requirement-icon">
+              <svg viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+
+            <div>
+              <strong>Business information</strong>
+              <span>
+                Registered business name and corresponding CAC registration details.
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form
+          class="verification-form"
+          id="verificationForm"
+        >
+
+          <div class="field">
+
+            <label class="form-label" for="cacNumber">
+              CAC Registration Number
+            </label>
+
+            <input
+              class="input"
+              type="text"
+              id="cacNumber"
+              placeholder="Enter your CAC registration number"
+              required
+            />
+
+          </div>
+
+
+          <div class="field">
+
+            <label class="form-label" for="businessName">
+              Registered Business Name
+            </label>
+
+            <input
+              class="input"
+              type="text"
+              id="businessName"
+              placeholder="Enter registered business name"
+              required
+            />
+
+          </div>
+
+
+          <div class="field">
+
+            <label class="form-label">
+              CAC Registration Document
+            </label>
+
+            <label class="upload-box" for="cacDocument">
+
+              <div class="upload-icon">
+
+                <svg viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+
+              </div>
+
+              <strong>Upload CAC document</strong>
+
+              <span>
+                PDF, JPG or PNG · Maximum 10MB
+              </span>
+
+              <div id="fileName"></div>
+
+            </label>
+
+            <input
+              type="file"
+              id="cacDocument"
+              accept=".pdf,.jpg,.jpeg,.png"
+            />
+
+          </div>
+
+
+          <button
+            class="submit-btn"
+            type="submit"
+            id="submitBtn"
+          >
+
+            <span>Submit for Verification</span>
+
+            <svg viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+
+          </button>
+
+
+          <div
+            class="success-message"
+            id="successMessage"
+          >
+            Your verification request has been submitted successfully.
+            Our compliance team will review the information provided and
+            update your account once the verification process is complete.
+          </div>
+
+        </form>
+
+
+        <!-- INFO -->
+
+        <div class="info-box">
+
+          <svg viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="16" x2="12" y2="12"/>
+            <line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+
+          <p>
+            Documents submitted for verification should be valid, clear and
+            belong to the registered business associated with this account.
+            Verification does not guarantee reinstatement of account access.
+            Additional information may be requested if necessary.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <div class="footer-links">
+      <a href="#">Help Center</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Contact Support</a>
+    </div>
+
+    <div>
+      © 2026 Business Portal. All rights reserved.
+    </div>
+
+  </footer>
+
+
+  <script>
+
+    const fileInput = document.getElementById("cacDocument");
+    const fileName = document.getElementById("fileName");
+
+    const form = document.getElementById("verificationForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const successMessage = document.getElementById("successMessage");
+
+
+    /* FILE SELECTION */
+
+    fileInput.addEventListener("change", function () {
+
+      if (!this.files.length) {
+        fileName.textContent = "";
+        return;
+      }
+
+      const file = this.files[0];
+
+      const maxSize = 10 * 1024 * 1024;
+
+      if (file.size > maxSize) {
+
+        alert("The selected file is larger than 10MB.");
+        this.value = "";
+        fileName.textContent = "";
+
+        return;
+      }
+
+      fileName.textContent = "✓ " + file.name;
+
+    });
+
+
+    /* FORM SUBMISSION */
+
+    form.addEventListener("submit", function (event) {
+
+      event.preventDefault();
+
+      if (!fileInput.files.length) {
+
+        alert("Please upload your CAC registration document.");
+        return;
+
+      }
+
+      submitBtn.disabled = true;
+
+      submitBtn.innerHTML = `
+        <span>Submitting...</span>
+      `;
+
+
+      /*
+        Demo front-end behaviour.
+
+        Connect this section to your backend/API
+        when you are ready to actually process
+        verification submissions.
+      */
+
+      setTimeout(function () {
+
+        submitBtn.disabled = false;
+
+        submitBtn.innerHTML = `
+          <span>Submit for Verification</span>
+
+          <svg viewBox="0 0 24 24" fill="none"
+               stroke="currentColor"
+               stroke-width="2"
+               stroke-linecap="round"
+               stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        `;
+
+        successMessage.style.display = "block";
+
+        successMessage.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+
+      }, 1200);
+
+    });
+
+  </script>
+
+</body>
+            </html>
