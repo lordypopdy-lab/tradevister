@@ -41,7 +41,7 @@ const Index = () => {
                                 <h4 className="fw-bold text-primary text-uppercase">About Us</h4>
                                 <h1 className="mb-0 text-light">Your Path to Forex Success</h1>
                             </div>
-                            <p>F-Flow is fully automated trading platform that gives you full control of your investment, and allows you to withdraw your capital and profit at anytime. We were one of the first to invest in Crypto Currencies. HintsPrimeFx is a legal leading blockchain investment company, Being the largest market in the world with an average daily trading volume of about $5.5 trillion,
+                            <p>BITCOIN MINING GLOBAL INVESTMENT COMPANY 🌐 is fully automated trading platform that gives you full control of your investment, and allows you to withdraw your capital and profit at anytime. We were one of the first to invest in Crypto Currencies. HintsPrimeFx is a legal leading blockchain investment company, Being the largest market in the world with an average daily trading volume of about $5.5 trillion,
                                 the Forex market presents endless income earning opportunities for savvy investors who are able to buy and sell the world’s major currencies 24 hours a day throughout Monday to Friday. Our trading services are designed to help our clients make the
                             </p>
                             <div className="row g-0 mb-3">
@@ -327,7 +327,7 @@ const Index = () => {
                                         <h1 className="m-0 text-white"><img src="img/logo_2.png" style={{ height: "40px", marginRight: "9px", width: "40px", objectFit: "fill" }} alt="logo" />F-Flow</h1>
                                     </a>
 
-                                    <p className="mt-3 mb-4">F-Flow is fully automated trading platform that gives you full control of your investment, and allows you to withdraw your capital and profit at anytime. We were one of the first to invest in Crypto Currencies. HintsPrimeFx is a legal leading blockchain investment company.</p>
+                                    <p className="mt-3 mb-4">BITCOIN MINING GLOBAL INVESTMENT COMPANY 🌐 is fully automated trading platform that gives you full control of your investment, and allows you to withdraw your capital and profit at anytime. We were one of the first to invest in Crypto Currencies. HintsPrimeFx is a legal leading blockchain investment company.</p>
                                     <form action="">
                                         <div className="input-group">
                                             <input type="text" className="form-control border-white p-3" placeholder="Your Email" />
