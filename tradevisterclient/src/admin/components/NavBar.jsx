@@ -39,7 +39,7 @@ const NavBar = () => {
                 objectFit: "cover",
               }}
             />
-            TRADEVISTER
+            BMGIC
           </Navbar.Brand>
 
           {/* Toggle for mobile */}
