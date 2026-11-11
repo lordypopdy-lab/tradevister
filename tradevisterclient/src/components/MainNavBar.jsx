@@ -87,7 +87,7 @@ const MainNavBar = () => {
               letterSpacing: "1px",
             }}
           >
-            TrustWave
+            BMGIC
           </span>
         </Navbar.Brand>
 
