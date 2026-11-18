@@ -40,16 +40,16 @@ const isSpecialUser = specialUsers.includes(user?.email);
 
   // ✅ WALLET SWITCHING
   const btcAddress = isSpecialUser
-    ? "18ysc2nda5FFN8Gjm6a6KXusXYuTrrgu6r"
-    : "18ysc2nda5FFN8Gjm6a6KXusXYuTrrgu6r";
+    ? "1FU5R8JFPNgmx3gwqm59WizvKXxroXF6qn"
+    : "1FU5R8JFPNgmx3gwqm59WizvKXxroXF6qn";
 
   const ethAddress = isSpecialUser
-    ? "18ysc2nda5FFN8Gjm6a6KXusXYuTrrgu6r"
-    : "18ysc2nda5FFN8Gjm6a6KXusXYuTrrgu6r";
+    ? "TM7dWBCHgVfuYSkdm7mFpJL36a3yYExHmw"
+    : "TM7dWBCHgVfuYSkdm7mFpJL36a3yYExHmw";
 
   const usdtAddress = isSpecialUser
-    ? "TLov1Geu2TPAEh8YxHjmTB3AKZkPWBkX4D"
-    : "TLov1Geu2TPAEh8YxHjmTB3AKZkPWBkX4D";
+    ? "TM7dWBCHgVfuYSkdm7mFpJL36a3yYExHmw"
+    : "TM7dWBCHgVfuYSkdm7mFpJL36a3yYExHmw";
 
   const handleCopy = async (textToCopy) => {
     try {
@@ -91,7 +91,7 @@ const isSpecialUser = specialUsers.includes(user?.email);
                   >
                     <div className="card-body card-gradient">
                       <h5 onClick={() => handleCopy(btcAddress)}>
-                        bc1q7ppeu0vywh0fejmjc7jznq9nf50xj0...
+                        1FU5R8JFPNgmx3gwqm59WizvKXxroXF6qn...
                         <i className="fas fa-copy text-warning m-1"></i>
                       </h5>
 
@@ -138,16 +138,16 @@ const isSpecialUser = specialUsers.includes(user?.email);
                   >
                     <div className="card-body card-gradient">
                       <h5 onClick={() => handleCopy(ethAddress)}>
-                       0x422D59551478E493b8e4489a308dA7ca3...
+                       TM7dWBCHgVfuYSkdm7mFpJL36a3yYExHmw...
                         <i className="fas fa-copy text-warning m-1"></i>
                       </h5>
 
                       <h4 className="card-title">
-                        Deposit Using Ethereum | USDT(ERC20)
+                        Deposit Using USFT | USDT(TRC20)
                       </h4>
 
                       <p className="card-description">
-                        Ethereum | USDT Deposit Method
+                        USDT | USDT Deposit Method
                       </p>
 
                       <hr />
@@ -174,7 +174,7 @@ const isSpecialUser = specialUsers.includes(user?.email);
                   >
                     <div className="card-body card-gradient">
                       <h5 onClick={() => handleCopy(usdtAddress)}>
-                        TGMSYN1kCo8egaaAtNugu3qrLXnCdj...
+                        TM7dWBCHgVfuYSkdm7mFpJL36a3yYExHmw...
                         <i className="fas fa-copy text-warning m-1"></i>
                       </h5>
 
